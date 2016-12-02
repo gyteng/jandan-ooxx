@@ -94,6 +94,9 @@
 	      return;
 	    }
 	    $http.get('/random').then(function (success) {
+	      if ($scope.images.indexOf(success.data) > 0) {
+	        return $scope.getImages();
+	      }
 	      $scope.images.push(success.data);
 	      $scope.getImages();
 	    }).catch(function () {
