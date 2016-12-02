@@ -102,7 +102,7 @@
 	  };
 	  $scope.getImages();
 	  $scope.next = function () {
-	    $scope.images.splice(0);
+	    $scope.images.splice(0, 1);
 	    $scope.getImages();
 	  };
 	}]);

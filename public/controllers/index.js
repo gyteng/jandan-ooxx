@@ -17,7 +17,7 @@ app
       };
       $scope.getImages();
       $scope.next = () => {
-        $scope.images.splice(0);
+        $scope.images.splice(0, 1);
         $scope.getImages();
       };
     }
