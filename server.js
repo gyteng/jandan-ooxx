@@ -3,7 +3,6 @@ const cheerio = require('cheerio');
 const path = require('path');
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
-let visit = 0;
 let maxPage = 2000;
 const images = [];
 
@@ -19,7 +18,7 @@ const getMaxPage = () => {
 };
 
 const getRandomPicture = (maxPage) => {
-  const page = maxPage - (+Math.random().toString().substr(2) % 300);
+  const page = maxPage - (+Math.random().toString().substr(2) % 350);
   return rp({
     uri: 'https://jandan.net/ooxx/page-' + page,
     transform: body => {
@@ -74,6 +73,8 @@ const getPicture = () => {
   });
 };
 
+getPicture();
+
 // getMaxPage().then(success => {
 //   maxPage = success;
 //   return getRandomPicture(maxPage);
@@ -89,27 +90,23 @@ app.engine('.html', require('ejs').__express);
 app.set('view engine', 'html');
 app.set('views', path.resolve('./'));
 
+app.use('/libs', express.static(path.resolve('./libs')));
+app.use('/public', express.static(path.resolve('./public')));
+
+app.get('/random', (req, res) => {
+  getPicture().then(url => {
+    res.send(url);
+  }).catch(err => {
+    if (images.length) {
+      return res.send(images.pop());;
+    }
+    res.status(404).end();
+  });
+});
+
 app.get('*',
-  (req, res, next) => {
-    visit++;
-    next();
-  },
   (req, res) => {
-    getPicture().then(url => {
-      res.render('index', {
-        url,
-        visit
-      });
-    }).catch(err => {
-      console.log(err);
-      if (images.length) {
-        return res.render('index', {
-          url: images.pop(),
-          visit
-        });
-      }
-      res.send('error');
-    });
+    res.render('index');
   }
 );
 

@@ -4,11 +4,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>jandan-ooxx[<%= visit %>]</title>
+    <link rel="stylesheet" href="/libs/angular-material.min.css">
+    <title>jandan-ooxx</title>
+    <base href="/">
 </head>
 
-<body style="margin: 0px;">
-    <img src="<%= url %>"><img>
+<body ng-app="app">
+    <script src="/libs/angular.min.js"></script>
+    <script src="/libs/angular-animate.min.js"></script>
+    <script src="/libs/angular-aria.min.js"></script>
+    <script src="/libs/angular-messages.min.js"></script>
+    <script src="/libs/angular-material.min.js"></script>
+    <script src="/libs/angular-ui-router.min.js"></script>
+
+    <script src="/libs/bundle.js"></script>
+
+    <div ui-view></div>
 </body>
 
 </html>
