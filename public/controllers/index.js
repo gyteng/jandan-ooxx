@@ -1,17 +1,20 @@
 const app = require('../index').app;
 
 app
-  .controller('MainController', ['$scope', '$mdSidenav', ($scope, $mdSidenav) => {
+  .controller('MainController', ['$scope', '$mdSidenav', '$state', ($scope, $mdSidenav, $state) => {
     $scope.openMenu = () => {
       $mdSidenav('left').toggle();
     };
     $scope.menus = [
-      {name: '首页', icon: ''},
-      {name: '浏览记录', icon: ''},
+      {name: '首页', icon: '', click: () =>  $state.go('index') },
+      {name: '浏览记录', icon: '', click: () =>  $state.go('history')},
     ];
   }])
-  .controller('IndexController', ['$scope', '$http', '$state', '$timeout',
-    ($scope, $http, $state, $timeout) => {
+  .controller('IndexController', ['$scope', '$http', '$state', '$timeout', '$localStorage',
+    ($scope, $http, $state, $timeout, $localStorage) => {
+      $localStorage.$default({
+        history: []
+      });
       $scope.images = [];
       $scope.getImages = () => {
         if($scope.images.length > 10) {
@@ -29,9 +32,15 @@ app
       };
       $scope.getImages();
       $scope.next = () => {
-        $scope.images.splice(0, 1);
+        const url = $scope.images.splice(0, 1);
+        $localStorage.history.push(url[0]);
         $scope.getImages();
       };
+    }
+  ])
+  .controller('HistoryController', ['$scope', '$localStorage',
+    ($scope, $localStorage) => {
+      $scope.history = $localStorage.history;
     }
   ])
 ;

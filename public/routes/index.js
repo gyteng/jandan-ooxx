@@ -15,5 +15,10 @@ app.config(['$stateProvider', $stateProvider => {
       url: '/',
       controller: 'IndexController',
       templateUrl: '/public/views/index.html',
+    })
+    .state('history', {
+      url: '/history',
+      controller: 'HistoryController',
+      templateUrl: '/public/views/history.html',
     });
 }]);

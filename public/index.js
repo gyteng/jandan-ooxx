@@ -1,1 +1,1 @@
-exports.app = angular.module('app', ['ngMaterial', 'ui.router', 'ngMessages' ]);
+exports.app = angular.module('app', ['ngMaterial', 'ui.router', 'ngMessages', 'ngStorage' ]);

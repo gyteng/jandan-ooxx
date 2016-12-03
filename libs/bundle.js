@@ -56,7 +56,7 @@
 
 	'use strict';
 
-	exports.app = angular.module('app', ['ngMaterial', 'ui.router', 'ngMessages']);
+	exports.app = angular.module('app', ['ngMaterial', 'ui.router', 'ngMessages', 'ngStorage']);
 
 /***/ },
 /* 2 */
@@ -76,6 +76,10 @@
 	    url: '/',
 	    controller: 'IndexController',
 	    templateUrl: '/public/views/index.html'
+	  }).state('history', {
+	    url: '/history',
+	    controller: 'HistoryController',
+	    templateUrl: '/public/views/history.html'
 	  });
 	}]);
 
@@ -87,12 +91,19 @@
 
 	var app = __webpack_require__(1).app;
 
-	app.controller('MainController', ['$scope', '$mdSidenav', function ($scope, $mdSidenav) {
+	app.controller('MainController', ['$scope', '$mdSidenav', '$state', function ($scope, $mdSidenav, $state) {
 	  $scope.openMenu = function () {
 	    $mdSidenav('left').toggle();
 	  };
-	  $scope.menus = [{ name: '首页', icon: '' }, { name: '历史记录', icon: '' }];
-	}]).controller('IndexController', ['$scope', '$http', '$state', '$timeout', function ($scope, $http, $state, $timeout) {
+	  $scope.menus = [{ name: '首页', icon: '', click: function click() {
+	      return $state.go('index');
+	    } }, { name: '浏览记录', icon: '', click: function click() {
+	      return $state.go('history');
+	    } }];
+	}]).controller('IndexController', ['$scope', '$http', '$state', '$timeout', '$localStorage', function ($scope, $http, $state, $timeout, $localStorage) {
+	  $localStorage.$default({
+	    history: []
+	  });
 	  $scope.images = [];
 	  $scope.getImages = function () {
 	    if ($scope.images.length > 10) {
@@ -110,9 +121,12 @@
 	  };
 	  $scope.getImages();
 	  $scope.next = function () {
-	    $scope.images.splice(0, 1);
+	    var url = $scope.images.splice(0, 1);
+	    $localStorage.history.push(url[0]);
 	    $scope.getImages();
 	  };
+	}]).controller('HistoryController', ['$scope', '$localStorage', function ($scope, $localStorage) {
+	  $scope.history = $localStorage.history;
 	}]);
 
 /***/ }

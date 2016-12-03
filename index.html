@@ -12,6 +12,7 @@
 
 <body ng-app="app">
     <script src="/libs/angular.min.js"></script>
+    <script src="/libs/ngStorage.min.js"></script>
     <script src="/libs/angular-animate.min.js"></script>
     <script src="/libs/angular-aria.min.js"></script>
     <script src="/libs/angular-messages.min.js"></script>
@@ -22,25 +23,28 @@
 
     <div ng-controller="MainController">
         <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="false" layout="column" layout-align="space-between stretch">
-          <md-content>
-          <div layout="column">
-              <md-list>
-                  <md-list-item ng-repeat="menu in menus">
-                      <a ng-click="menuClick($index)">
-                          <md-item-content md-ink-ripple layout="row" layout-align="start center">
-                              <div class="inset">
-                                  <md-icon class="material-icons">{{menu.icon}}</md-icon>
-                              </div>
-                              <div class="inset">
-                                  {{menu.name}}
-                              </div>
-                          </md-item-content>
-                      </a>
-                  </md-list-item>
-              </md-list>
-          </div>
-      </md-content>
+            <md-content>
+                <div layout="column">
+                    <md-list>
+                        <md-list-item ng-repeat="menu in menus">
+                            <a ng-click="menu.click()">
+                                <md-item-content md-ink-ripple layout="row" layout-align="start center">
+                                    <div class="inset">
+                                        <md-icon class="material-icons">{{menu.icon}}</md-icon>
+                                    </div>
+                                    <div class="inset">
+                                        {{menu.name}}
+                                    </div>
+                                </md-item-content>
+                            </a>
+                        </md-list-item>
+                    </md-list>
+                </div>
+            </md-content>
         </md-sidenav>
+        <md-button style="position: absolute;" class="md-icon-button md-primary" ng-click="openMenu()">
+            <md-icon class="material-icons">menu</md-icon>
+        </md-button>
         <div ui-view></div>
     </div>
 </body>
