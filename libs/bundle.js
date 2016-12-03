@@ -91,6 +91,7 @@
 	  $scope.openMenu = function () {
 	    $mdSidenav('left').toggle();
 	  };
+	  $scope.menus = [{ name: '首页', icon: '' }, { name: '历史记录', icon: '' }];
 	}]).controller('IndexController', ['$scope', '$http', '$state', '$timeout', function ($scope, $http, $state, $timeout) {
 	  $scope.images = [];
 	  $scope.getImages = function () {

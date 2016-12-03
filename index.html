@@ -22,10 +22,24 @@
 
     <div ng-controller="MainController">
         <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="false" layout="column" layout-align="space-between stretch">
-            <md-content>
-                <div layout="column">
-                </div>
-            </md-content>
+          <md-content>
+          <div layout="column">
+              <md-list>
+                  <md-list-item ng-repeat="menu in menus">
+                      <a ng-click="menuClick($index)">
+                          <md-item-content md-ink-ripple layout="row" layout-align="start center">
+                              <div class="inset">
+                                  <md-icon class="material-icons">{{menu.icon}}</md-icon>
+                              </div>
+                              <div class="inset">
+                                  {{menu.name}}
+                              </div>
+                          </md-item-content>
+                      </a>
+                  </md-list-item>
+              </md-list>
+          </div>
+      </md-content>
         </md-sidenav>
         <div ui-view></div>
     </div>

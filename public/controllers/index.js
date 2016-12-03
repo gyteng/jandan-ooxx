@@ -5,6 +5,10 @@ app
     $scope.openMenu = () => {
       $mdSidenav('left').toggle();
     };
+    $scope.menus = [
+      {name: '首页', icon: ''},
+      {name: '浏览记录', icon: ''},
+    ];
   }])
   .controller('IndexController', ['$scope', '$http', '$state', '$timeout',
     ($scope, $http, $state, $timeout) => {
