@@ -20,7 +20,15 @@
 
     <script src="/libs/bundle.js"></script>
 
-    <div ui-view></div>
+    <div ng-controller="MainController">
+        <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="false" layout="column" layout-align="space-between stretch">
+            <md-content>
+                <div layout="column">
+                </div>
+            </md-content>
+        </md-sidenav>
+        <div ui-view></div>
+    </div>
 </body>
 
 </html>

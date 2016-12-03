@@ -1,6 +1,11 @@
 const app = require('../index').app;
 
 app
+  .controller('MainController', ['$scope', '$mdSidenav', ($scope, $mdSidenav) => {
+    $scope.openMenu = () => {
+      $mdSidenav('left').toggle();
+    };
+  }])
   .controller('IndexController', ['$scope', '$http', '$state', '$timeout',
     ($scope, $http, $state, $timeout) => {
       $scope.images = [];

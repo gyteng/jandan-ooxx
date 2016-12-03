@@ -87,7 +87,11 @@
 
 	var app = __webpack_require__(1).app;
 
-	app.controller('IndexController', ['$scope', '$http', '$state', '$timeout', function ($scope, $http, $state, $timeout) {
+	app.controller('MainController', ['$scope', '$mdSidenav', function ($scope, $mdSidenav) {
+	  $scope.openMenu = function () {
+	    $mdSidenav('left').toggle();
+	  };
+	}]).controller('IndexController', ['$scope', '$http', '$state', '$timeout', function ($scope, $http, $state, $timeout) {
 	  $scope.images = [];
 	  $scope.getImages = function () {
 	    if ($scope.images.length > 10) {
