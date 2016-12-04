@@ -8,7 +8,7 @@
 
     <md-grid-tile ng-repeat="image in history track by $index" class="gray"
         md-rowspan="1" md-colspan="1" md-colspan-sm="1" md-colspan-xs="1">
-      <div style="height: 33.34vw; overflow:hidden;" layout-fill layout="row" layout-align="center center">
+      <div style="height: 33.34vw; overflow:hidden;" layout-fill layout="row" layout-align="center center" ng-click="toImage($index)">
         <img ng-src="{{image}}" style="width: 100%; overflow:hidden;"></img>
       </div>
       <!-- <md-grid-tile-footer> -->

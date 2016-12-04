@@ -2,6 +2,10 @@ const app = require('../index').app;
 
 app
   .controller('MainController', ['$scope', '$mdSidenav', '$state', ($scope, $mdSidenav, $state) => {
+    $scope.historyIndex = null;
+    $scope.setHistoryIndex = (index) => {
+      $scope.historyIndex = index;
+    };
     $scope.images = [];
     $scope.openMenu = () => {
       $mdSidenav('left').toggle();
@@ -15,8 +19,8 @@ app
       $mdSidenav('left').close();
     };
   }])
-  .controller('IndexController', ['$scope', '$http', '$state', '$timeout', '$localStorage',
-    ($scope, $http, $state, $timeout, $localStorage) => {
+  .controller('IndexController', ['$scope', '$http', '$state', '$stateParams', '$timeout', '$localStorage',
+    ($scope, $http, $state, $stateParams, $timeout, $localStorage) => {
       $localStorage.$default({
         history: []
       });
@@ -37,18 +41,25 @@ app
           $scope.getImages();
         });
       };
+      if($scope.historyIndex !== null) {
+        $scope.images[0] = $localStorage.history[$scope.historyIndex];
+        $scope.setHistoryIndex(null);
+      }
       $scope.getImages();
       $scope.next = () => {
         $scope.images.splice(0, 1);
-        // const url = $scope.images.splice(0, 1);
         $localStorage.history.push($scope.images[0]);
         $scope.getImages();
       };
     }
   ])
-  .controller('HistoryController', ['$scope', '$localStorage',
-    ($scope, $localStorage) => {
+  .controller('HistoryController', ['$scope', '$localStorage', '$state',
+    ($scope, $localStorage, $state) => {
       $scope.history = $localStorage.history;
+      $scope.toImage = (index) => {
+        $scope.setHistoryIndex(index);
+        $state.go('index');
+      };
     }
   ])
 ;

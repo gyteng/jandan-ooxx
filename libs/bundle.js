@@ -92,6 +92,10 @@
 	var app = __webpack_require__(1).app;
 
 	app.controller('MainController', ['$scope', '$mdSidenav', '$state', function ($scope, $mdSidenav, $state) {
+	  $scope.historyIndex = null;
+	  $scope.setHistoryIndex = function (index) {
+	    $scope.historyIndex = index;
+	  };
 	  $scope.images = [];
 	  $scope.openMenu = function () {
 	    $mdSidenav('left').toggle();
@@ -101,7 +105,7 @@
 	    $state.go($scope.menus[index].click);
 	    $mdSidenav('left').close();
 	  };
-	}]).controller('IndexController', ['$scope', '$http', '$state', '$timeout', '$localStorage', function ($scope, $http, $state, $timeout, $localStorage) {
+	}]).controller('IndexController', ['$scope', '$http', '$state', '$stateParams', '$timeout', '$localStorage', function ($scope, $http, $state, $stateParams, $timeout, $localStorage) {
 	  $localStorage.$default({
 	    history: []
 	  });
@@ -122,15 +126,22 @@
 	      $scope.getImages();
 	    });
 	  };
+	  if ($scope.historyIndex !== null) {
+	    $scope.images[0] = $localStorage.history[$scope.historyIndex];
+	    $scope.setHistoryIndex(null);
+	  }
 	  $scope.getImages();
 	  $scope.next = function () {
 	    $scope.images.splice(0, 1);
-	    // const url = $scope.images.splice(0, 1);
 	    $localStorage.history.push($scope.images[0]);
 	    $scope.getImages();
 	  };
-	}]).controller('HistoryController', ['$scope', '$localStorage', function ($scope, $localStorage) {
+	}]).controller('HistoryController', ['$scope', '$localStorage', '$state', function ($scope, $localStorage, $state) {
 	  $scope.history = $localStorage.history;
+	  $scope.toImage = function (index) {
+	    $scope.setHistoryIndex(index);
+	    $state.go('index');
+	  };
 	}]);
 
 /***/ }
