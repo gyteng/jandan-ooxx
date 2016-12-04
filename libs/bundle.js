@@ -96,6 +96,10 @@
 	  $scope.setHistoryIndex = function (index) {
 	    $scope.historyIndex = index;
 	  };
+	  $scope.index = null;
+	  $scope.setIndex = function (index) {
+	    $scope.index = index;
+	  };
 	  $scope.images = [];
 	  $scope.openMenu = function () {
 	    $mdSidenav('left').toggle();
@@ -119,6 +123,7 @@
 	      }
 	      if (!$scope.images.length) {
 	        $localStorage.history.push(success.data);
+	        $scope.setIndex(0);
 	      }
 	      $scope.images.push(success.data);
 	      $scope.getImages();
@@ -128,13 +133,27 @@
 	  };
 	  if ($scope.historyIndex !== null) {
 	    $scope.images[0] = $localStorage.history[$scope.historyIndex];
+	    $scope.setIndex($scope.historyIndex);
 	    $scope.setHistoryIndex(null);
 	  }
 	  $scope.getImages();
-	  $scope.next = function () {
+	  $scope.random = function () {
 	    $scope.images.splice(0, 1);
 	    $localStorage.history.push($scope.images[0]);
+	    $scope.setIndex($localStorage.history.length - 1);
 	    $scope.getImages();
+	  };
+	  $scope.next = function () {
+	    if ($scope.index < $localStorage.history.length - 1) {
+	      $scope.setIndex($scope.index + 1);
+	      $scope.images[0] = $localStorage.history[$scope.index];
+	    }
+	  };
+	  $scope.prev = function () {
+	    if ($scope.index > 0) {
+	      $scope.setIndex($scope.index - 1);
+	      $scope.images[0] = $localStorage.history[$scope.index];
+	    }
 	  };
 	}]).controller('HistoryController', ['$scope', '$localStorage', '$state', function ($scope, $localStorage, $state) {
 	  $scope.history = $localStorage.history;

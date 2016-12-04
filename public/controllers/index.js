@@ -6,6 +6,10 @@ app
     $scope.setHistoryIndex = (index) => {
       $scope.historyIndex = index;
     };
+    $scope.index = null;
+    $scope.setIndex = (index) => {
+      $scope.index = index;
+    };
     $scope.images = [];
     $scope.openMenu = () => {
       $mdSidenav('left').toggle();
@@ -34,6 +38,7 @@ app
           }
           if(!$scope.images.length) {
             $localStorage.history.push(success.data);
+            $scope.setIndex(0);
           }
           $scope.images.push(success.data);
           $scope.getImages();
@@ -43,13 +48,27 @@ app
       };
       if($scope.historyIndex !== null) {
         $scope.images[0] = $localStorage.history[$scope.historyIndex];
+        $scope.setIndex($scope.historyIndex);
         $scope.setHistoryIndex(null);
       }
       $scope.getImages();
-      $scope.next = () => {
+      $scope.random = () => {
         $scope.images.splice(0, 1);
         $localStorage.history.push($scope.images[0]);
+        $scope.setIndex($localStorage.history.length - 1);
         $scope.getImages();
+      };
+      $scope.next = () => {
+        if($scope.index < $localStorage.history.length - 1) {
+          $scope.setIndex($scope.index + 1);
+          $scope.images[0] = $localStorage.history[$scope.index];
+        }
+      };
+      $scope.prev = () => {
+        if($scope.index > 0) {
+          $scope.setIndex($scope.index - 1);
+          $scope.images[0] = $localStorage.history[$scope.index];
+        }
       };
     }
   ])
