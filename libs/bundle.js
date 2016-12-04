@@ -95,11 +95,11 @@
 	  $scope.openMenu = function () {
 	    $mdSidenav('left').toggle();
 	  };
-	  $scope.menus = [{ name: '首页', icon: '', click: function click() {
-	      return $state.go('index');
-	    } }, { name: '浏览记录', icon: '', click: function click() {
-	      return $state.go('history');
-	    } }];
+	  $scope.menus = [{ name: '首页', icon: '', click: 'index' }, { name: '浏览记录', icon: '', click: 'history' }];
+	  $scope.menuClick = function (index) {
+	    $state.go($scope.menus[index].click);
+	    $mdSidenav('left').close();
+	  };
 	}]).controller('IndexController', ['$scope', '$http', '$state', '$timeout', '$localStorage', function ($scope, $http, $state, $timeout, $localStorage) {
 	  $localStorage.$default({
 	    history: []

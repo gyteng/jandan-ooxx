@@ -27,7 +27,7 @@
                 <div layout="column">
                     <md-list>
                         <md-list-item ng-repeat="menu in menus">
-                            <a ng-click="menu.click()">
+                            <a ng-click="menuClick($index)">
                                 <md-item-content md-ink-ripple layout="row" layout-align="start center">
                                     <div class="inset">
                                         <md-icon class="material-icons">{{menu.icon}}</md-icon>
