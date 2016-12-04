@@ -140,6 +140,9 @@
 	  $scope.random = function () {
 	    $scope.images.splice(0, 1);
 	    $localStorage.history.push($scope.images[0]);
+	    if ($localStorage.history.length > 50) {
+	      $localStorage.history.splice(0, 1);
+	    }
 	    $scope.setIndex($localStorage.history.length - 1);
 	    $scope.getImages();
 	  };
