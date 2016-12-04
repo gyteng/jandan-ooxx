@@ -92,6 +92,7 @@
 	var app = __webpack_require__(1).app;
 
 	app.controller('MainController', ['$scope', '$mdSidenav', '$state', function ($scope, $mdSidenav, $state) {
+	  $scope.images = [];
 	  $scope.openMenu = function () {
 	    $mdSidenav('left').toggle();
 	  };
@@ -104,7 +105,6 @@
 	  $localStorage.$default({
 	    history: []
 	  });
-	  $scope.images = [];
 	  $scope.getImages = function () {
 	    if ($scope.images.length > 10) {
 	      return;
@@ -112,6 +112,9 @@
 	    $http.get('/random').then(function (success) {
 	      if ($scope.images.indexOf(success.data) > 0) {
 	        return $scope.getImages();
+	      }
+	      if (!$scope.images.length) {
+	        $localStorage.history.push(success.data);
 	      }
 	      $scope.images.push(success.data);
 	      $scope.getImages();
@@ -121,8 +124,9 @@
 	  };
 	  $scope.getImages();
 	  $scope.next = function () {
-	    var url = $scope.images.splice(0, 1);
-	    $localStorage.history.push(url[0]);
+	    $scope.images.splice(0, 1);
+	    // const url = $scope.images.splice(0, 1);
+	    $localStorage.history.push($scope.images[0]);
 	    $scope.getImages();
 	  };
 	}]).controller('HistoryController', ['$scope', '$localStorage', function ($scope, $localStorage) {

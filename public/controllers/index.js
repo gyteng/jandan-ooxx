@@ -2,6 +2,7 @@ const app = require('../index').app;
 
 app
   .controller('MainController', ['$scope', '$mdSidenav', '$state', ($scope, $mdSidenav, $state) => {
+    $scope.images = [];
     $scope.openMenu = () => {
       $mdSidenav('left').toggle();
     };
@@ -19,7 +20,6 @@ app
       $localStorage.$default({
         history: []
       });
-      $scope.images = [];
       $scope.getImages = () => {
         if($scope.images.length > 10) {
           return;
@@ -27,6 +27,9 @@ app
         $http.get('/random').then(success => {
           if($scope.images.indexOf(success.data) > 0) {
             return $scope.getImages();
+          }
+          if(!$scope.images.length) {
+            $localStorage.history.push(success.data);
           }
           $scope.images.push(success.data);
           $scope.getImages();
@@ -36,8 +39,9 @@ app
       };
       $scope.getImages();
       $scope.next = () => {
-        const url = $scope.images.splice(0, 1);
-        $localStorage.history.push(url[0]);
+        $scope.images.splice(0, 1);
+        // const url = $scope.images.splice(0, 1);
+        $localStorage.history.push($scope.images[0]);
         $scope.getImages();
       };
     }
