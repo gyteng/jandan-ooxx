@@ -2,11 +2,11 @@ const app = require('../index').app;
 
 app
   .controller('MainController', ['$scope', '$mdSidenav', '$state', ($scope, $mdSidenav, $state) => {
-    $scope.historyIndex = null;
+    $scope.historyIndex = false;
     $scope.setHistoryIndex = (index) => {
       $scope.historyIndex = index;
     };
-    $scope.index = null;
+    $scope.index = 0;
     $scope.setIndex = (index) => {
       $scope.index = index;
     };
@@ -15,8 +15,8 @@ app
       $mdSidenav('left').toggle();
     };
     $scope.menus = [
-      {name: '首页', icon: '', click: 'index' },
-      {name: '浏览记录', icon: '', click: 'history' },
+      {name: '首页', icon: 'home', click: 'index' },
+      {name: '浏览记录', icon: 'history', click: 'history' },
     ];
     $scope.menuClick = index => {
       $state.go($scope.menus[index].click);
@@ -46,10 +46,9 @@ app
           $scope.getImages();
         });
       };
-      if($scope.historyIndex !== null) {
-        $scope.images[0] = $localStorage.history[$scope.historyIndex];
-        $scope.setIndex($scope.historyIndex);
-        $scope.setHistoryIndex(null);
+      if($scope.historyIndex) {
+        $scope.images[0] = $localStorage.history[$scope.index];
+        $scope.setHistoryIndex(false);
       }
       $scope.getImages();
       $scope.random = () => {
@@ -65,6 +64,8 @@ app
         if($scope.index < $localStorage.history.length - 1) {
           $scope.setIndex($scope.index + 1);
           $scope.images[0] = $localStorage.history[$scope.index];
+        } else {
+          $scope.random();
         }
       };
       $scope.prev = () => {
@@ -79,7 +80,8 @@ app
     ($scope, $localStorage, $state) => {
       $scope.history = $localStorage.history;
       $scope.toImage = (index) => {
-        $scope.setHistoryIndex(index);
+        $scope.setHistoryIndex(true);
+        $scope.setIndex(index);
         $state.go('index');
       };
     }

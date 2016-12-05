@@ -92,11 +92,11 @@
 	var app = __webpack_require__(1).app;
 
 	app.controller('MainController', ['$scope', '$mdSidenav', '$state', function ($scope, $mdSidenav, $state) {
-	  $scope.historyIndex = null;
+	  $scope.historyIndex = false;
 	  $scope.setHistoryIndex = function (index) {
 	    $scope.historyIndex = index;
 	  };
-	  $scope.index = null;
+	  $scope.index = 0;
 	  $scope.setIndex = function (index) {
 	    $scope.index = index;
 	  };
@@ -104,7 +104,7 @@
 	  $scope.openMenu = function () {
 	    $mdSidenav('left').toggle();
 	  };
-	  $scope.menus = [{ name: '首页', icon: '', click: 'index' }, { name: '浏览记录', icon: '', click: 'history' }];
+	  $scope.menus = [{ name: '首页', icon: 'home', click: 'index' }, { name: '浏览记录', icon: 'history', click: 'history' }];
 	  $scope.menuClick = function (index) {
 	    $state.go($scope.menus[index].click);
 	    $mdSidenav('left').close();
@@ -131,10 +131,9 @@
 	      $scope.getImages();
 	    });
 	  };
-	  if ($scope.historyIndex !== null) {
-	    $scope.images[0] = $localStorage.history[$scope.historyIndex];
-	    $scope.setIndex($scope.historyIndex);
-	    $scope.setHistoryIndex(null);
+	  if ($scope.historyIndex) {
+	    $scope.images[0] = $localStorage.history[$scope.index];
+	    $scope.setHistoryIndex(false);
 	  }
 	  $scope.getImages();
 	  $scope.random = function () {
@@ -150,6 +149,8 @@
 	    if ($scope.index < $localStorage.history.length - 1) {
 	      $scope.setIndex($scope.index + 1);
 	      $scope.images[0] = $localStorage.history[$scope.index];
+	    } else {
+	      $scope.random();
 	    }
 	  };
 	  $scope.prev = function () {
@@ -161,7 +162,8 @@
 	}]).controller('HistoryController', ['$scope', '$localStorage', '$state', function ($scope, $localStorage, $state) {
 	  $scope.history = $localStorage.history;
 	  $scope.toImage = function (index) {
-	    $scope.setHistoryIndex(index);
+	    $scope.setHistoryIndex(true);
+	    $scope.setIndex(index);
 	    $state.go('index');
 	  };
 	}]);
