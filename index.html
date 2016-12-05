@@ -22,8 +22,8 @@
     <script src="/libs/bundle.js"></script>
 
     <div ng-controller="MainController">
-      <md-sidenav style="z-index:1001;" class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="false" layout="column" layout-align="space-between stretch">
-            <md-content>
+        <md-sidenav style="position:fixed;" class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="false" layout="column" layout-align="space-between stretch">
+            <!-- <md-content> -->
                 <div layout="column">
                     <md-list>
                         <md-list-item ng-repeat="menu in menus">
@@ -40,14 +40,11 @@
                         </md-list-item>
                     </md-list>
                 </div>
-            </md-content>
+            <!-- </md-content> -->
         </md-sidenav>
-        <md-button style="position: fixed; z-index:1000;" class="md-fab md-mini md-fab-top-left" ng-click="openMenu()">
+        <md-button style="position: fixed;" class="md-fab md-mini md-fab-top-left" ng-click="openMenu()">
             <md-icon class="material-icons">menu</md-icon>
         </md-button>
-        <!-- <md-button style="z-index:1000;" class="md-fab md-fab-bottom-right" ng-click="openMenu()">
-            <md-icon class="material-icons">menu</md-icon>
-        </md-button> -->
         <md-content ui-view>
         </md-content>
     </div>
