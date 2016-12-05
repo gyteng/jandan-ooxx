@@ -85,7 +85,34 @@ app
       if($mdMedia('gt-md')) {
         $scope.divHeightStyle.height = 100/6 + 'vw';
       }
-      $scope.history = $localStorage.history;
+      $scope.history = $localStorage.history.map(m => {
+        return {
+          url: m,
+          width: 1,
+          height: 1,
+          style: { width: '100%', overflow: 'hidden'},
+        };
+      });
+      $scope.history.forEach((f, i) => {
+        const img = new Image();
+        // $scope.$apply(() => {
+          img.onload = () => {
+            $scope.history[i].width = img.width;
+            $scope.history[i].height = img.height;
+          };
+        // });
+        img.src = f.url;
+      });
+      // console.log($scope.history);
+      $scope.$watch('history', () => {
+        $scope.history.forEach((f, i) => {
+          if(f.height < f.width) {
+            f.style = { height: '100% ', overflow: 'visible', 'max-width': '200%'};
+          }
+        });
+        console.log($scope.history);
+      }, true);
+
       $scope.toImage = (index) => {
         $scope.setHistoryIndex(true);
         $scope.setIndex(index);
