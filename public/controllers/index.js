@@ -130,8 +130,9 @@ app
       $scope.$watch('history', () => {
         $scope.history.forEach((f, i) => {
           if(f.height < f.width) {
-            f.style = { height: '100%', 'max-width': 'none', width: 100 / f.height * f.width + '%'};
-            // f.style = { 'max-width': '480%', overflow: 'visible' };
+            // f.style = { height: '100%', 'max-width': 'none', width: 100 / f.height * f.width + '%'};
+            // f.style = { height: '100%', 'max-width': 'none', width: 'auto'};
+            f.style = { height: '100%', 'max-width': 'none', 'min-width': 100 / f.height * f.width + '%'};
           }
         });
         console.log($scope.history);
