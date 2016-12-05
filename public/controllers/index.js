@@ -13,6 +13,12 @@ app
     $scope.images = [];
     $scope.openMenu = () => {
       $mdSidenav('left').toggle();
+      // if($state.current.name === 'history') {
+      //   $state.go('index');
+      // }
+      // if($state.current.name === 'index') {
+      //   $state.go('history');
+      // }
     };
     $scope.menus = [
       {name: '首页', icon: 'home', click: 'index' },
@@ -54,8 +60,8 @@ app
       $scope.random = () => {
         $scope.images.splice(0, 1);
         $localStorage.history.push($scope.images[0]);
-        if($localStorage.history.length > 50) {
-          $localStorage.history.splice(0, $localStorage.history.length - 50);
+        if($localStorage.history.length > 60) {
+          $localStorage.history.splice(0, $localStorage.history.length - 60);
         }
         $scope.setIndex($localStorage.history.length - 1);
         $scope.getImages();
