@@ -159,7 +159,14 @@
 	      $scope.images[0] = $localStorage.history[$scope.index];
 	    }
 	  };
-	}]).controller('HistoryController', ['$scope', '$localStorage', '$state', function ($scope, $localStorage, $state) {
+	}]).controller('HistoryController', ['$scope', '$localStorage', '$state', '$mdMedia', function ($scope, $localStorage, $state, $mdMedia) {
+	  $scope.divHeightStyle = { height: 100 / 3 + 'vw' };
+	  if ($mdMedia('md')) {
+	    $scope.divHeightStyle.height = 100 / 4 + 'vw';
+	  }
+	  if ($mdMedia('gt-md')) {
+	    $scope.divHeightStyle.height = 100 / 6 + 'vw';
+	  }
 	  $scope.history = $localStorage.history;
 	  $scope.toImage = function (index) {
 	    $scope.setHistoryIndex(true);

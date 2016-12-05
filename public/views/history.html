@@ -1,13 +1,10 @@
 <div>
-  <!-- <div flex="25">
-    <img ng-repeat="image in history" ng-src="{{image}}"></img>
-  </div> -->
   <md-grid-list
         md-cols-xs="3" md-cols-sm="3" md-cols-md="4" md-cols-gt-md="6"
-        md-row-height-gt-md="1:1" md-row-height="2:2" md-gutter="0">
+        md-row-height-gt-md="1:1" md-row-height="1:1" md-gutter="0">
     <md-grid-tile ng-repeat="image in history track by $index" class="gray"
         md-rowspan="1" md-colspan="1" md-colspan-sm="1" md-colspan-xs="1">
-      <div style="height: 33.34vw; overflow:hidden;" layout-fill layout="row" layout-align="center center" ng-click="toImage($index)">
+      <div ng-style="divHeightStyle" style="overflow:hidden;" layout-fill layout="row" layout-align="center center" ng-click="toImage($index)">
         <img ng-src="{{image}}" style="width: 100%; overflow:hidden;"></img>
       </div>
       <!-- <md-grid-tile-footer> -->

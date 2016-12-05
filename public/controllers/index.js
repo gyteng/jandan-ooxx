@@ -76,8 +76,15 @@ app
       };
     }
   ])
-  .controller('HistoryController', ['$scope', '$localStorage', '$state',
-    ($scope, $localStorage, $state) => {
+  .controller('HistoryController', ['$scope', '$localStorage', '$state', '$mdMedia',
+    ($scope, $localStorage, $state, $mdMedia) => {
+      $scope.divHeightStyle = { height: 100/3 + 'vw' };
+      if($mdMedia('md')) {
+        $scope.divHeightStyle.height = 100/4 + 'vw';
+      }
+      if($mdMedia('gt-md')) {
+        $scope.divHeightStyle.height = 100/6 + 'vw';
+      }
       $scope.history = $localStorage.history;
       $scope.toImage = (index) => {
         $scope.setHistoryIndex(true);
