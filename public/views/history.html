@@ -6,7 +6,7 @@
     <md-grid-tile ng-repeat="image in history track by $index" class="gray"
         md-rowspan="1" md-colspan="1" md-colspan-sm="1" md-colspan-xs="1">
       <div ng-style="divHeightStyle" style="overflow:hidden;" layout="row" layout-align="center center" ng-click="toImage($index)">
-        <img ng-src="{{image.url}}" ng-style="image.style;"></img>
+        <img ng-src="{{image.url}}" ng-show="image.width > 1" ng-style="image.style;" style="overflow:hidden;"></img>
       </div>
       <!-- <md-grid-tile-footer>
         <h3>{{}}</h3>

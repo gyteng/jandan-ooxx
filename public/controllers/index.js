@@ -1,7 +1,11 @@
 const app = require('../index').app;
 
 app
-  .controller('MainController', ['$scope', '$mdSidenav', '$state', ($scope, $mdSidenav, $state) => {
+  .controller('MainController', ['$scope', '$mdSidenav', '$state', '$mdDialog', '$localStorage',
+  ($scope, $mdSidenav, $state, $mdDialog, $localStorage) => {
+    $localStorage.$default({
+      autoShowHelpInfo: true,
+    });
     $scope.historyIndex = false;
     $scope.setHistoryIndex = (index) => {
       $scope.historyIndex = index;
@@ -13,19 +17,29 @@ app
     $scope.images = [];
     $scope.openMenu = () => {
       $mdSidenav('left').toggle();
-      // if($state.current.name === 'history') {
-      //   $state.go('index');
-      // }
-      // if($state.current.name === 'index') {
-      //   $state.go('history');
-      // }
+    };
+    $scope.helpDialog = {
+      autoShow: $localStorage.autoShowHelpInfo,
+    };
+    $scope.setHelpInfo = () => {
+      $localStorage.autoShowHelpInfo = $scope.helpDialog.autoShow;
+    };
+    $scope.showHelpDialog = () => {
+      $mdDialog.show({
+        preserveScope: true,
+        scope: $scope,
+        templateUrl: '/public/views/help.html',
+        parent: angular.element(document.body),
+        clickOutsideToClose:true,
+      });
     };
     $scope.menus = [
-      {name: '首页', icon: 'home', click: 'index' },
-      {name: '浏览记录', icon: 'history', click: 'history' },
+      {name: '首页', icon: 'home', click: () => $state.go('index') },
+      {name: '浏览记录', icon: 'history', click: () => $state.go('history') },
+      {name: '帮助', icon: 'help_outline', click: () => $scope.showHelpDialog() },
     ];
     $scope.menuClick = index => {
-      $state.go($scope.menus[index].click);
+      $scope.menus[index].click();
       $mdSidenav('left').close();
     };
   }])
@@ -34,6 +48,9 @@ app
       $localStorage.$default({
         history: []
       });
+      if($localStorage.autoShowHelpInfo) {
+        $scope.showHelpDialog();
+      };
       $scope.getImages = () => {
         if($scope.images.length > 10) {
           return;
@@ -113,7 +130,8 @@ app
       $scope.$watch('history', () => {
         $scope.history.forEach((f, i) => {
           if(f.height < f.width) {
-            f.style = { height: '100% ', overflow: 'visible', 'max-width': '200%'};
+            f.style = { height: '100%', 'max-width': 'none', width: 100 / f.height * f.width + '%'};
+            // f.style = { 'max-width': '480%', overflow: 'visible' };
           }
         });
         console.log($scope.history);
