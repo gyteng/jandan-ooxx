@@ -48,7 +48,7 @@ app
       $localStorage.$default({
         history: []
       });
-      if($localStorage.autoShowHelpInfo) {
+      if($localStorage.autoShowHelpInfo && !$scope.historyIndex) {
         $scope.showHelpDialog();
       };
       $scope.getImages = () => {
