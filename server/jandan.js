@@ -52,7 +52,7 @@ const filterGif = (url, maxPage, minPage) => {
 };
 
 const getPictureFromJandan = (limit) => {
-  if(limit && getPictureFromJandanTime && Date.now() - getPictureFromJandanTime < 5 * 1000) {
+  if(limit && getPictureFromJandanTime && Date.now() - getPictureFromJandanTime < 2 * 1000) {
     return Promise.resolve();
   }
   getPictureFromJandanTime = Date.now();
@@ -94,5 +94,14 @@ const getPictureAndSave = () => {
     });
   });
 };
+
+setInterval(() => {
+  knex('images').count('url AS count')
+  .then(count => {
+    if(count[0].count < 1000) {
+      getPictureFromJandan(true).then();
+    }
+  });
+}, 10 * 1000);
 
 exports.getPicture = getPictureAndSave;
