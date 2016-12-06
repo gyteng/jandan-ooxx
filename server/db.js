@@ -7,7 +7,8 @@ const knex = require('knex')({
 });
 
 knex.schema.createTableIfNotExists('images', table => {
-  table.string('url').primary();
+  table.increments('id').primary();
+  table.string('url').unique();
   table.integer('status').defaultTo(0);
 }).then();
 

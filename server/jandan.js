@@ -3,7 +3,7 @@ const cheerio = require('cheerio');
 const knex = require('./db').knex;
 
 let maxPage = null;
-let minPage = 1200;
+let minPage = 1;
 let getMaxPageTime = null;
 let getPictureFromJandanTime = null;
 const newImages = [];
@@ -41,25 +41,32 @@ const getPicture = (maxPage, minPage = 2000) => {
   });
 };
 
-const filterGif = (url, maxPage, minPage) => {
+const filterPic = (url, maxPage, minPage) => {
   if(url.substr(-4).toLowerCase() === '.gif') {
     console.log(`过滤gif图: ${ url }`);
     return getPicture(maxPage, minPage)
     .then(url => {
-      return filterGif(url);
+      return filterPic(url);
+    });
+  }
+  if(url.indexOf('sinaimg.cn/') < 0) {
+    console.log(`过滤非sina图: ${ url }`);
+    return getPicture(maxPage, minPage)
+    .then(url => {
+      return filterPic(url);
     });
   }
   return Promise.resolve(url);
 };
 
 const getPictureFromJandan = (limit) => {
-  if(insertDbStatus.length >= 100) {
-    const successRate = insertDbStatus.filter(f => f === 0).length / insertDbStatus.length;
-    console.log(`Rate: ${ successRate }`);
-    if(successRate < 0.6) {
-      minPage--;
-    };
-  }
+  // if(insertDbStatus.length >= 100) {
+  //   const successRate = insertDbStatus.filter(f => f === 0).length / insertDbStatus.length;
+  //   console.log(`Rate: ${ successRate }`);
+  //   if(successRate < 0.6) {
+  //     minPage--;
+  //   };
+  // }
   if(limit && getPictureFromJandanTime && Date.now() - getPictureFromJandanTime < 500) {
     return Promise.resolve();
   }
@@ -68,16 +75,16 @@ const getPictureFromJandan = (limit) => {
   .then(() => {
     return getPicture(maxPage, minPage);
   }).then(url => {
-    return filterGif(url, maxPage, minPage);
+    return filterPic(url, maxPage, minPage);
   }).then(url => {
-    if(insertDbStatus.length > 100) {
-      insertDbStatus.splice(0, insertDbStatus.length - 100);
-    }
+    // if(insertDbStatus.length > 100) {
+    //   insertDbStatus.splice(0, insertDbStatus.length - 100);
+    // }
     knex('images').insert({ url }).then(() => {
-      if(newImages.length < 50) { newImages.push(url); }
-      insertDbStatus.push(0);
+      if(newImages.length < 60) { newImages.push(url); }
+      // insertDbStatus.push(0);
     }).catch(() => {
-      insertDbStatus.push(1);
+      // insertDbStatus.push(1);
     });
     return url;
   });
@@ -87,7 +94,7 @@ const getPictureAndSave = () => {
   return knex('images').count('url AS count')
   .then(count => {
     console.log(`count: ${ count[0].count }`);
-    if(count[0].count < 20) {
+    if(count[0].count < 60) {
       return getPictureFromJandan();
     }
     getPictureFromJandan(true).then();
