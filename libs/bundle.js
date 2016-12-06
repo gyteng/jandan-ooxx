@@ -93,7 +93,8 @@
 
 	app.controller('MainController', ['$scope', '$mdSidenav', '$state', '$mdDialog', '$localStorage', function ($scope, $mdSidenav, $state, $mdDialog, $localStorage) {
 	  $localStorage.$default({
-	    autoShowHelpInfo: true
+	    autoShowHelpInfo: true,
+	    history: []
 	  });
 	  $scope.historyIndex = false;
 	  $scope.setHistoryIndex = function (index) {
@@ -134,9 +135,9 @@
 	    $mdSidenav('left').close();
 	  };
 	}]).controller('IndexController', ['$scope', '$http', '$state', '$stateParams', '$timeout', '$localStorage', function ($scope, $http, $state, $stateParams, $timeout, $localStorage) {
-	  $localStorage.$default({
-	    history: []
-	  });
+	  // $localStorage.$default({
+	  //   history: []
+	  // });
 	  if ($localStorage.autoShowHelpInfo && !$scope.historyIndex) {
 	    $scope.showHelpDialog();
 	  };
@@ -187,6 +188,9 @@
 	    }
 	  };
 	}]).controller('HistoryController', ['$scope', '$localStorage', '$state', '$mdMedia', function ($scope, $localStorage, $state, $mdMedia) {
+	  if (!$localStorage.history) {
+	    return $state.go('index');
+	  }
 	  $scope.divHeightStyle = { height: 100 / 3 + 'vw' };
 	  if ($mdMedia('md')) {
 	    $scope.divHeightStyle.height = 100 / 4 + 'vw';
@@ -203,8 +207,8 @@
 	    };
 	  });
 	  $scope.history.forEach(function (f, i) {
-	    var img = new Image();
 	    // $scope.$apply(() => {
+	    var img = new Image();
 	    img.onload = function () {
 	      $scope.history[i].width = img.width;
 	      $scope.history[i].height = img.height;
@@ -212,18 +216,9 @@
 	        $scope.history[i].style = { height: '100%', 'max-width': 'none', 'min-width': 100 / f.height * f.width + '%' };
 	      }
 	    };
-	    // });
 	    img.src = f.url;
+	    // });
 	  });
-	  // console.log($scope.history);
-	  // $scope.$watch('history', () => {
-	  //   $scope.history.forEach((f, i) => {
-	  //     if(f.height < f.width) {
-	  //       f.style = { height: '100%', 'max-width': 'none', 'min-width': 100 / f.height * f.width + '%'};
-	  //     }
-	  //   });
-	  //   console.log($scope.history);
-	  // }, true);
 
 	  $scope.toImage = function (index) {
 	    $scope.setHistoryIndex(true);

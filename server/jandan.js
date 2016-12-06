@@ -3,7 +3,7 @@ const cheerio = require('cheerio');
 const knex = require('./db').knex;
 
 let maxPage = null;
-let minPage = 2200;
+let minPage = 1200;
 let getMaxPageTime = null;
 let getPictureFromJandanTime = null;
 const newImages = [];
@@ -56,7 +56,7 @@ const getPictureFromJandan = (limit) => {
   if(insertDbStatus.length >= 100) {
     const successRate = insertDbStatus.filter(f => f === 0).length / insertDbStatus.length;
     console.log(`Rate: ${ successRate }`);
-    if(successRate < 0.8) {
+    if(successRate < 0.6) {
       minPage--;
     };
   }
@@ -105,7 +105,7 @@ const getPictureAndSave = () => {
 setInterval(() => {
   knex('images').count('url AS count')
   .then(count => {
-    if(count[0].count < 1500) {
+    if(count[0].count < 3500) {
       getPictureFromJandan(true).then();
     }
   });
