@@ -82,6 +82,7 @@ const getPictureAndSave = () => {
   };
   return knex('images').count('url AS count')
   .then(count => {
+    console.log(`count: ${ count[0].count }`);
     if(count[0].count < 20) {
       return getPictureFromJandan();
     }

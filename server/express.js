@@ -15,6 +15,7 @@ const getPicture = require('./jandan').getPicture;
 
 app.get('/random', (req, res) => {
   getPicture().then(url => {
+    console.log(url);
     res.send(url);
   }).catch(err => {
     res.status(404).end();
