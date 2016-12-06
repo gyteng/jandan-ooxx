@@ -51,6 +51,29 @@ const filterGif = (url, maxPage, minPage) => {
   return Promise.resolve(url);
 };
 
+const getPictureFromJandan = (limit) => {
+  if(limit && getPictureFromJandanTime && Date.now() - getPictureFromJandanTime < 5 * 1000) {
+    return Promise.resolve();
+  }
+  getPictureFromJandanTime = Date.now();
+  return getMaxPage()
+  .then(() => {
+    return getPicture(maxPage, minPage);
+  }).then(url => {
+    return filterGif(url, maxPage, minPage);
+  }).then(url => {
+    if(insertDbStatus.length > 100) {
+      insertDbStatus.splice(0, insertDbStatus.length - 100);
+    }
+    knex('images').insert({ url }).then(() => {
+      insertDbStatus.push(0);
+    }).catch(() => {
+      insertDbStatus.push(1);
+    });
+    return url;
+  });
+};
+
 const getPictureAndSave = () => {
   if(insertDbStatus.length >= 100) {
     const successRate = insertDbStatus.filter(f => f === 0).length / insertDbStatus.length;
@@ -58,28 +81,6 @@ const getPictureAndSave = () => {
       minPage--;
     };
   }
-  const getPictureFromJandan = (limit) => {
-    if(limit && getPictureFromJandanTime && Date.now() - getPictureFromJandanTime < 5 * 1000) {
-      return Promise.resolve();
-    }
-    getPictureFromJandanTime = Date.now();
-    return getMaxPage()
-    .then(() => {
-      return getPicture(maxPage, minPage);
-    }).then(url => {
-      return filterGif(url, maxPage, minPage);
-    }).then(url => {
-      if(insertDbStatus.length > 100) {
-        insertDbStatus.splice(0, insertDbStatus.length - 100);
-      }
-      knex('images').insert({ url }).then(() => {
-        insertDbStatus.push(0);
-      }).catch(() => {
-        insertDbStatus.push(1);
-      });
-      return url;
-    });
-  };
   return knex('images').count('url AS count')
   .then(count => {
     console.log(`count: ${ count[0].count }`);
