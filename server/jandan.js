@@ -77,6 +77,7 @@ const getPictureFromJandan = (limit) => {
 const getPictureAndSave = () => {
   if(insertDbStatus.length >= 100) {
     const successRate = insertDbStatus.filter(f => f === 0).length / insertDbStatus.length;
+    console.log(`Rate: ${ successRate }`);
     if(successRate < 0.5) {
       minPage--;
     };
@@ -102,6 +103,6 @@ setInterval(() => {
       getPictureFromJandan(true).then();
     }
   });
-}, 10 * 1000);
+}, 5 * 1000);
 
 exports.getPicture = getPictureAndSave;
