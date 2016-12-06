@@ -78,7 +78,7 @@ const getPictureAndSave = () => {
   if(insertDbStatus.length >= 100) {
     const successRate = insertDbStatus.filter(f => f === 0).length / insertDbStatus.length;
     console.log(`Rate: ${ successRate }`);
-    if(successRate < 0.5) {
+    if(successRate < 0.8) {
       minPage--;
     };
   }
