@@ -1,3 +1,5 @@
+const knex = require('./server/db').knex;
+
 const rp = require('request-promise');
 const cheerio = require('cheerio');
 const path = require('path');
@@ -49,6 +51,9 @@ const getPicture = () => {
       return getRandomPicture(maxPage);
     }).then(url => {
       return filterGif(url);
+    }).then(url => {
+      // knex('images').insert({ url }).then(console.log).catch(console.log);
+      return url;
     });
   };
   const pushImages = () => {
