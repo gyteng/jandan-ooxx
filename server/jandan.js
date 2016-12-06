@@ -6,6 +6,7 @@ let maxPage = null;
 let minPage = 2200;
 let getMaxPageTime = null;
 let getPictureFromJandanTime = null;
+const newImages = [];
 const insertDbStatus = [];
 
 const getMaxPage = () => {
@@ -62,6 +63,7 @@ const getPictureFromJandan = (limit) => {
   }).then(url => {
     return filterGif(url, maxPage, minPage);
   }).then(url => {
+    if(newImages.length < 20) { newImages.push(url); }
     if(insertDbStatus.length > 100) {
       insertDbStatus.splice(0, insertDbStatus.length - 100);
     }
@@ -89,6 +91,10 @@ const getPictureAndSave = () => {
       return getPictureFromJandan();
     }
     getPictureFromJandan(true).then();
+    if(newImages.length) {
+      const url = newImages.splice(0, 1)[0];
+      return url;
+    }
     return knex('images').orderByRaw('RANDOM()').limit(1)
     .then(success => {
       return success[0].url;
