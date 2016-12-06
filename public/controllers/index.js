@@ -122,21 +122,22 @@ app
           img.onload = () => {
             $scope.history[i].width = img.width;
             $scope.history[i].height = img.height;
+            if(img.height < img.width) {
+              $scope.history[i].style = { height: '100%', 'max-width': 'none', 'min-width': 100 / f.height * f.width + '%'};
+            }
           };
         // });
         img.src = f.url;
       });
       // console.log($scope.history);
-      $scope.$watch('history', () => {
-        $scope.history.forEach((f, i) => {
-          if(f.height < f.width) {
-            // f.style = { height: '100%', 'max-width': 'none', width: 100 / f.height * f.width + '%'};
-            // f.style = { height: '100%', 'max-width': 'none', width: 'auto'};
-            f.style = { height: '100%', 'max-width': 'none', 'min-width': 100 / f.height * f.width + '%'};
-          }
-        });
-        console.log($scope.history);
-      }, true);
+      // $scope.$watch('history', () => {
+      //   $scope.history.forEach((f, i) => {
+      //     if(f.height < f.width) {
+      //       f.style = { height: '100%', 'max-width': 'none', 'min-width': 100 / f.height * f.width + '%'};
+      //     }
+      //   });
+      //   console.log($scope.history);
+      // }, true);
 
       $scope.toImage = (index) => {
         $scope.setHistoryIndex(true);
