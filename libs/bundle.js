@@ -160,7 +160,11 @@
 	    });
 	  };
 	  if ($scope.historyIndex) {
-	    $scope.images[0] = $localStorage.history[$scope.index];
+	    // $scope.images[0] = $localStorage.history[$scope.index];
+	    $scope.images[0] = {
+	      id: $localStorage.history[$scope.index].id,
+	      url: $localStorage.history[$scope.index].url
+	    };
 	    $scope.setHistoryIndex(false);
 	  }
 	  $scope.getImages();
@@ -200,7 +204,8 @@
 	  }
 	  $scope.history = $localStorage.history.map(function (m) {
 	    return {
-	      url: m,
+	      id: m.id,
+	      url: m.url,
 	      width: 1,
 	      height: 1,
 	      style: { width: '100%', overflow: 'hidden' }

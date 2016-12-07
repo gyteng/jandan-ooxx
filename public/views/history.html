@@ -8,9 +8,9 @@
       <div ng-style="divHeightStyle" style="overflow:hidden;" layout="row" layout-align="center center" ng-click="toImage($index)">
         <img ng-src="{{image.url}}" ng-style="image.style;" style="overflow:hidden;"></img>
       </div>
-      <!-- <md-grid-tile-footer>
-        <h3>{{}}</h3>
-      </md-grid-tile-footer> -->
+      <md-grid-tile-footer>
+        <h3>{{image.id}}</h3>
+      </md-grid-tile-footer>
     </md-grid-tile>
 
   </md-grid-list>

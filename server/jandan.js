@@ -67,7 +67,7 @@ const getPictureFromJandan = (limit) => {
   //     minPage--;
   //   };
   // }
-  if(limit && getPictureFromJandanTime && Date.now() - getPictureFromJandanTime < 500) {
+  if(limit && getPictureFromJandanTime && Date.now() - getPictureFromJandanTime < 1000) {
     return Promise.resolve();
   }
   getPictureFromJandanTime = Date.now();
@@ -80,8 +80,11 @@ const getPictureFromJandan = (limit) => {
     // if(insertDbStatus.length > 100) {
     //   insertDbStatus.splice(0, insertDbStatus.length - 100);
     // }
-    knex('images').insert({ url }).then(() => {
-      if(newImages.length < 60) { newImages.push(url); }
+    knex('images').insert({ url }).then(success => {
+      if(newImages.length < 60) { newImages.push({
+        id: success[0],
+        url,
+      }); }
       // insertDbStatus.push(0);
     }).catch(() => {
       // insertDbStatus.push(1);
@@ -94,17 +97,21 @@ const getPictureAndSave = () => {
   return knex('images').count('url AS count')
   .then(count => {
     console.log(`count: ${ count[0].count }`);
-    if(count[0].count < 60) {
-      return getPictureFromJandan();
-    }
+    // if(count[0].count < 60) {
+    //   return getPictureFromJandan();
+    // }
     getPictureFromJandan(true).then();
     if(newImages.length) {
-      const url = newImages.splice(0, 1)[0];
-      return url;
+      const image = newImages.splice(0, 1)[0];
+      return image;
     }
     return knex('images').orderByRaw('RANDOM()').limit(1)
     .then(success => {
-      return success[0].url;
+      // return success[0].url;
+      return {
+        id: success[0].id,
+        url: success[0].url,
+      };
     });
   });
 };
@@ -116,6 +123,6 @@ setInterval(() => {
       getPictureFromJandan(true).then();
     }
   });
-}, 800);
+}, 2* 1000);
 
 exports.getPicture = getPictureAndSave;
