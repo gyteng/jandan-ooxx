@@ -56,7 +56,7 @@ app
         $scope.showHelpDialog();
       };
       $scope.getImages = () => {
-        if($scope.images.length > 10) {
+        if($scope.images.length > 15) {
           return;
         }
         $http.get('/random').then(success => {
