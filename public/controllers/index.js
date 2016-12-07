@@ -1,12 +1,20 @@
 const app = require('../index').app;
 
 app
-  .controller('MainController', ['$scope', '$mdSidenav', '$state', '$mdDialog', '$localStorage',
-  ($scope, $mdSidenav, $state, $mdDialog, $localStorage) => {
+  .controller('MainController', ['$scope', '$mdSidenav', '$state', '$mdDialog', '$localStorage', '$interval',
+  ($scope, $mdSidenav, $state, $mdDialog, $localStorage, $interval) => {
     $localStorage.$default({
+      autoChange: false,
       autoShowHelpInfo: true,
       imagesHistory: [],
     });
+    $scope.autoChange = {
+      status: $localStorage.autoChange,
+      interval: null,
+    };
+    $scope.setAutoChange = () => {
+      $localStorage.autoChange = $scope.autoChange.status;
+    };
     $scope.historyIndex = false;
     $scope.setHistoryIndex = (index) => {
       $scope.historyIndex = index;
@@ -46,12 +54,14 @@ app
       $scope.menus[index].click();
       $mdSidenav('left').close();
     };
+    $scope.$on('$stateChangeStart',(event, toState, toParams, fromState, fromParams, options) => {
+      if(fromState.name === 'index') {
+        $scope.autoChange.interval && $interval.cancel($scope.autoChange.interval);
+      }
+    });
   }])
-  .controller('IndexController', ['$scope', '$http', '$state', '$stateParams', '$timeout', '$localStorage',
-    ($scope, $http, $state, $stateParams, $timeout, $localStorage) => {
-      // $localStorage.$default({
-      //   history: []
-      // });
+  .controller('IndexController', ['$scope', '$http', '$state', '$stateParams', '$timeout', '$interval', '$localStorage',
+    ($scope, $http, $state, $stateParams, $timeout, $interval, $localStorage) => {
       if($localStorage.autoShowHelpInfo && !$scope.historyIndex) {
         $scope.showHelpDialog();
       };
@@ -107,6 +117,16 @@ app
           $scope.images[0] = $localStorage.imagesHistory[$scope.index];
         }
       };
+      $scope.$watch('autoChange.status', () => {
+        if(!$scope.autoChange.status) {
+          $scope.autoChange.interval && $interval.cancel($scope.autoChange.interval);
+          return;
+        }
+        $scope.autoChange.interval = $interval(() => {
+          $scope.random();
+        }, 10 * 1000);
+      });
+
     }
   ])
   .controller('HistoryController', ['$scope', '$localStorage', '$state', '$mdMedia',

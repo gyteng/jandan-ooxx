@@ -25,7 +25,7 @@
     <div ng-controller="MainController">
         <section layout="row" flex>
             <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="false" layout="row" layout-align="space-between stretch">
-                <md-content>
+                <md-content layout="column" layout-align="space-between center">
                     <div layout="column">
                         <md-list>
                             <md-list-item ng-repeat="menu in menus">
@@ -39,6 +39,15 @@
                                         </div>
                                     </md-item-content>
                                 </a>
+                            </md-list-item>
+                        </md-list>
+                    </div>
+                    <div layout="column">
+                        <md-list>
+                            <md-list-item>
+                                <md-switch ng-model="autoChange.status" aria-label="switch" ng-change="setAutoChange()">
+                                    自动切换
+                                </md-switch>
                             </md-list-item>
                         </md-list>
                     </div>
