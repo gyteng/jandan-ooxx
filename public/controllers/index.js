@@ -85,7 +85,7 @@ app
       $scope.random = () => {
         $scope.getImages();
         $scope.images.splice(0, 1);
-        if($scope.images.length) { $localStorage.imagesHistory.push($scope.images[0]); }
+        if($scope.images[0]) { $localStorage.imagesHistory.push($scope.images[0]); }
         if($localStorage.imagesHistory.length > 60) {
           $localStorage.imagesHistory.splice(0, $localStorage.imagesHistory.length - 60);
         }
