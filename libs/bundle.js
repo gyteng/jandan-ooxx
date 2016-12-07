@@ -96,6 +96,7 @@
 	    autoShowHelpInfo: true,
 	    imagesHistory: []
 	  });
+	  $localStorage.imagesHistory = [];
 	  $scope.historyIndex = false;
 	  $scope.setHistoryIndex = function (index) {
 	    $scope.historyIndex = index;
