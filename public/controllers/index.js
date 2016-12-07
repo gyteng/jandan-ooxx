@@ -26,13 +26,16 @@ app
       $localStorage.autoShowHelpInfo = $scope.helpDialog.autoShow;
     };
     $scope.showHelpDialog = () => {
-      $mdDialog.show({
+      $scope.dialog = $mdDialog.show({
         preserveScope: true,
         scope: $scope,
         templateUrl: '/public/views/help.html',
         parent: angular.element(document.body),
         clickOutsideToClose:true,
       });
+    };
+    $scope.closeDialog = () => {
+      $mdDialog.hide($scope.dialog);
     };
     $scope.menus = [
       {name: '首页', icon: 'home', click: () => $state.go('index') },
