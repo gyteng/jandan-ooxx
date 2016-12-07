@@ -84,14 +84,12 @@ app
       $scope.getImages();
       $scope.random = () => {
         $scope.getImages();
-        if($scope.images.length >= 2) {
-          $scope.images.splice(0, 1);
-          $localStorage.imagesHistory.push($scope.images[0]);
-          if($localStorage.imagesHistory.length > 60) {
-            $localStorage.imagesHistory.splice(0, $localStorage.imagesHistory.length - 60);
-          }
-          $scope.setIndex($localStorage.imagesHistory.length - 1);
+        $scope.images.splice(0, 1);
+        if($scope.images.length) { $localStorage.imagesHistory.push($scope.images[0]); }
+        if($localStorage.imagesHistory.length > 60) {
+          $localStorage.imagesHistory.splice(0, $localStorage.imagesHistory.length - 60);
         }
+        $scope.setIndex($localStorage.imagesHistory.length - 1);
       };
       $scope.next = () => {
         if($scope.index < $localStorage.imagesHistory.length - 1) {
