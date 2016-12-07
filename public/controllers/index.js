@@ -65,14 +65,17 @@ app
       if($localStorage.autoShowHelpInfo && !$scope.historyIndex) {
         $scope.showHelpDialog();
       };
+      let isGetImagesRunning = false;
       $scope.getImages = () => {
-        if($scope.images.length > 15) {
+        if($scope.images.length > 15 || isGetImagesRunning) {
           return;
         }
+        isGetImagesRunning = true;
         $http.get('/random').then(success => {
-          if($scope.images.indexOf(success.data) > 0) {
-            return $scope.getImages();
-          }
+          isGetImagesRunning = false;
+          // if($scope.images.indexOf(success.data) > 0) {
+          //   return $scope.getImages();
+          // }
           if(!$scope.images.length) {
             $localStorage.imagesHistory.push(success.data);
             $scope.setIndex(0);
@@ -81,8 +84,9 @@ app
           $scope.getImages();
         }).catch(() => {
           $timeout(() => {
+            isGetImagesRunning = false;
             $scope.getImages();
-          }, 1500);
+          }, 2000);
         });
       };
       if($scope.historyIndex) {
