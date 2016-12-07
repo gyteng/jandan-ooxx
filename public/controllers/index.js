@@ -67,7 +67,9 @@ app
           $scope.images.push(success.data);
           $scope.getImages();
         }).catch(() => {
-          $scope.getImages();
+          $timeout(() => {
+            $scope.getImages();
+          }, 1500);
         });
       };
       if($scope.historyIndex) {

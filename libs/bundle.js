@@ -156,7 +156,9 @@
 	      $scope.images.push(success.data);
 	      $scope.getImages();
 	    }).catch(function () {
-	      $scope.getImages();
+	      $timeout(function () {
+	        $scope.getImages();
+	      }, 1500);
 	    });
 	  };
 	  if ($scope.historyIndex) {
