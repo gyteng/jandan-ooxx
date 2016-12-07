@@ -1,3 +1,6 @@
-<div layout-fill layout="row" layout-align="center center" ng-click="random()" md-swipe-left="next()" md-swipe-right="prev()">
-  <img ng-repeat="image in images track by $index" ng-show="$index === 0" ng-src="{{image.url}}"></img>
+<div ng-repeat="image in images track by $index" ng-show="$index === 0" layout-fill layout="row" layout-align="center center" ng-click="random()" md-swipe-left="next()" md-swipe-right="prev()">
+  <img ng-src="{{image.url}}"></img>
+  <div style="position: absolute; left: 0px; bottom: 0px; color:#000; opacity:0.2; font-size:48px;">
+    {{image.id}}
+  </div>
 </div>
