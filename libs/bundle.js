@@ -94,7 +94,7 @@
 	app.controller('MainController', ['$scope', '$mdSidenav', '$state', '$mdDialog', '$localStorage', function ($scope, $mdSidenav, $state, $mdDialog, $localStorage) {
 	  $localStorage.$default({
 	    autoShowHelpInfo: true,
-	    history: []
+	    imagesHistory: []
 	  });
 	  $scope.historyIndex = false;
 	  $scope.setHistoryIndex = function (index) {
@@ -150,7 +150,7 @@
 	        return $scope.getImages();
 	      }
 	      if (!$scope.images.length) {
-	        $localStorage.history.push(success.data);
+	        $localStorage.imagesHistory.push(success.data);
 	        $scope.setIndex(0);
 	      }
 	      $scope.images.push(success.data);
@@ -162,25 +162,25 @@
 	  if ($scope.historyIndex) {
 	    // $scope.images[0] = $localStorage.history[$scope.index];
 	    $scope.images[0] = {
-	      id: $localStorage.history[$scope.index].id,
-	      url: $localStorage.history[$scope.index].url
+	      id: $localStorage.imagesHistory[$scope.index].id,
+	      url: $localStorage.imagesHistory[$scope.index].url
 	    };
 	    $scope.setHistoryIndex(false);
 	  }
 	  $scope.getImages();
 	  $scope.random = function () {
 	    $scope.images.splice(0, 1);
-	    $localStorage.history.push($scope.images[0]);
-	    if ($localStorage.history.length > 60) {
-	      $localStorage.history.splice(0, $localStorage.history.length - 60);
+	    $localStorage.imagesHistory.push($scope.images[0]);
+	    if ($localStorage.imagesHistory.length > 60) {
+	      $localStorage.imagesHistory.splice(0, $localStorage.imagesHistory.length - 60);
 	    }
-	    $scope.setIndex($localStorage.history.length - 1);
+	    $scope.setIndex($localStorage.imagesHistory.length - 1);
 	    $scope.getImages();
 	  };
 	  $scope.next = function () {
-	    if ($scope.index < $localStorage.history.length - 1) {
+	    if ($scope.index < $localStorage.imagesHistory.length - 1) {
 	      $scope.setIndex($scope.index + 1);
-	      $scope.images[0] = $localStorage.history[$scope.index];
+	      $scope.images[0] = $localStorage.imagesHistory[$scope.index];
 	    } else {
 	      $scope.random();
 	    }
@@ -188,11 +188,11 @@
 	  $scope.prev = function () {
 	    if ($scope.index > 0) {
 	      $scope.setIndex($scope.index - 1);
-	      $scope.images[0] = $localStorage.history[$scope.index];
+	      $scope.images[0] = $localStorage.imagesHistory[$scope.index];
 	    }
 	  };
 	}]).controller('HistoryController', ['$scope', '$localStorage', '$state', '$mdMedia', function ($scope, $localStorage, $state, $mdMedia) {
-	  if (!$localStorage.history) {
+	  if (!$localStorage.imagesHistory) {
 	    return $state.go('index');
 	  }
 	  $scope.divHeightStyle = { height: 100 / 3 + 'vw' };
@@ -202,7 +202,7 @@
 	  if ($mdMedia('gt-md')) {
 	    $scope.divHeightStyle.height = 100 / 6 + 'vw';
 	  }
-	  $scope.history = $localStorage.history.map(function (m) {
+	  $scope.history = $localStorage.imagesHistory.map(function (m) {
 	    return {
 	      id: m.id,
 	      url: m.url,
