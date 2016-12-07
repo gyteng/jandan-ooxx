@@ -96,7 +96,6 @@
 	    autoShowHelpInfo: true,
 	    imagesHistory: []
 	  });
-	  $localStorage.imagesHistory = [];
 	  $scope.historyIndex = false;
 	  $scope.setHistoryIndex = function (index) {
 	    $scope.historyIndex = index;
@@ -172,13 +171,15 @@
 	  }
 	  $scope.getImages();
 	  $scope.random = function () {
+	    $scope.getImages();
 	    $scope.images.splice(0, 1);
-	    $localStorage.imagesHistory.push($scope.images[0]);
+	    if ($scope.images[0]) {
+	      $localStorage.imagesHistory.push($scope.images[0]);
+	    }
 	    if ($localStorage.imagesHistory.length > 60) {
 	      $localStorage.imagesHistory.splice(0, $localStorage.imagesHistory.length - 60);
 	    }
 	    $scope.setIndex($localStorage.imagesHistory.length - 1);
-	    $scope.getImages();
 	  };
 	  $scope.next = function () {
 	    if ($scope.index < $localStorage.imagesHistory.length - 1) {
