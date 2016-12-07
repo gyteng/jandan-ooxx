@@ -83,6 +83,9 @@ app
       }
       $scope.getImages();
       $scope.random = () => {
+        if($scope.images.length < 2) {
+          $scope.getImages();
+        }
         $scope.images.splice(0, 1);
         $localStorage.imagesHistory.push($scope.images[0]);
         if($localStorage.imagesHistory.length > 60) {
