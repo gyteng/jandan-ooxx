@@ -94,7 +94,7 @@ app
         $scope.setHistoryIndex(false);
       }
       $scope.getImages();
-      $scope.random = () => {
+      $scope.random = (fromInterval) => {
         $scope.getImages();
         $scope.images.splice(0, 1);
         if($scope.images[0]) { $localStorage.imagesHistory.push($scope.images[0]); }
@@ -102,6 +102,14 @@ app
           $localStorage.imagesHistory.splice(0, $localStorage.imagesHistory.length - 60);
         }
         $scope.setIndex($localStorage.imagesHistory.length - 1);
+        if(!fromInterval) {
+          $scope.autoChange.interval && $interval.cancel($scope.autoChange.interval);
+          if($scope.autoChange.status) {
+            $scope.autoChange.interval = $interval(() => {
+              $scope.random(true);
+            }, 10 * 1000);
+          }
+        }
       };
       $scope.next = () => {
         if($scope.index < $localStorage.imagesHistory.length - 1) {
@@ -123,7 +131,7 @@ app
           return;
         }
         $scope.autoChange.interval = $interval(() => {
-          $scope.random();
+          $scope.random(true);
         }, 10 * 1000);
       });
 
