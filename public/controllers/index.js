@@ -7,9 +7,6 @@ app
       autoShowHelpInfo: true,
       history: [],
     });
-    if($localStorage.history.length && !$scope.history[0].url) {
-      $localStorage.history = [];
-    }
     $scope.historyIndex = false;
     $scope.setHistoryIndex = (index) => {
       $scope.historyIndex = index;
