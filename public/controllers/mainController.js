@@ -57,7 +57,13 @@ app
         name: '帮助',
         icon: 'help_outline',
         click: () => $scope.showHelpDialog()
-      }, ];
+      }, {
+        name: '关于本项目',
+        icon: 'code',
+        click: () => {
+          window.location = 'https://github.com/gyteng/jandan-ooxx';
+        },
+      } ];
       $scope.menuClick = index => {
         $scope.menus[index].click();
         $mdSidenav('left').close();
