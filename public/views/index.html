@@ -13,7 +13,7 @@
     {{image.id}}
   </div>
 </div> -->
-<div style="position: absolute; right: 15px; bottom: 15px; opacity:0.25" ng-show="autoChange.status">
-  <md-progress-circular md-mode="determinate" value="{{progress.circular}}"></md-progress-circular>
+<div style="position: absolute; right: 15px; bottom: 15px; opacity:0.4" ng-show="autoChange.status">
+  <md-progress-circular md-mode="determinate" value="{{progress.circular}}" md-diameter="20px"></md-progress-circular>
 </div>
 <img ng-hide="true" ng-repeat="image in images track by $index" ng-src="{{image.url}}"></img>
