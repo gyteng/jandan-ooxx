@@ -16,6 +16,11 @@ app.config(['$stateProvider', $stateProvider => {
       controller: 'IndexController',
       templateUrl: '/public/views/index.html',
     })
+    .state('index.image', {
+      url: '{id:int}',
+      controller: 'ImageController',
+      templateUrl: '/public/views/image.html',
+    })
     .state('history', {
       url: '/history',
       controller: 'HistoryController',

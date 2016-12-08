@@ -21,6 +21,18 @@ app.get('/random', (req, res) => {
   });
 });
 
+const knex = require('./db').knex;
+
+app.get('/image/:id', (req, res) => {
+  const id = req.params.id;
+  knex('images').select(['id', 'url']).where({ id }).then(success => {
+    if(success.length) {
+      return res.send(success[0]);
+    }
+    return res.status(404).end();
+  });
+});
+
 app.get('*',
   (req, res) => {
     res.render('index');

@@ -1,8 +1,8 @@
 const app = require('../index').app;
 
 app
-  .controller('MainController', ['$scope', '$mdSidenav', '$state', '$mdDialog', '$localStorage', '$interval',
-    ($scope, $mdSidenav, $state, $mdDialog, $localStorage, $interval) => {
+  .controller('MainController', ['$scope', '$mdSidenav', '$state', '$mdDialog', '$localStorage', '$interval', '$location',
+    ($scope, $mdSidenav, $state, $mdDialog, $localStorage, $interval, $location) => {
       $localStorage.$default({
         autoChange: false,
         autoShowHelpInfo: true,
@@ -48,7 +48,12 @@ app
       $scope.menus = [{
         name: '首页',
         icon: 'home',
-        click: () => $state.go('index')
+        click: () => {
+          if($location.path().match(/^\/\d{1,}$/)) {
+            return;
+          }
+          $state.go('index');
+        }
       }, {
         name: '浏览记录',
         icon: 'history',
@@ -69,7 +74,7 @@ app
         $mdSidenav('left').close();
       };
       $scope.$on('$stateChangeStart', (event, toState, toParams, fromState, fromParams, options) => {
-        if (fromState.name === 'index') {
+        if (fromState.name === 'index.image') {
           $scope.autoChange.interval && $interval.cancel($scope.autoChange.interval);
         }
       });
