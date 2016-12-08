@@ -1,3 +1,6 @@
 require('./index');
 require('./routes/index');
-require('./controllers/index');
+
+require('./controllers/mainController');
+require('./controllers/indexController');
+require('./controllers/historyController');
