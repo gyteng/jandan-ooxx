@@ -77,17 +77,13 @@ const getPictureFromJandan = (limit) => {
   }).then(url => {
     return filterPic(url, maxPage, minPage);
   }).then(url => {
-    // if(insertDbStatus.length > 100) {
-    //   insertDbStatus.splice(0, insertDbStatus.length - 100);
-    // }
     knex('images').insert({ url }).then(success => {
       if(newImages.length < 60) { newImages.push({
         id: success[0],
         url,
       }); }
-      // insertDbStatus.push(0);
+      console.log(`添加图片[${ success[0] }][${ url }]`);
     }).catch(() => {
-      // insertDbStatus.push(1);
     });
     return url;
   });
@@ -96,10 +92,6 @@ const getPictureFromJandan = (limit) => {
 const getPictureAndSave = () => {
   return knex('images').count('url AS count')
   .then(count => {
-    console.log(`count: ${ count[0].count }`);
-    // if(count[0].count < 60) {
-    //   return getPictureFromJandan();
-    // }
     getPictureFromJandan(true).then();
     if(newImages.length) {
       const image = newImages.splice(0, 1)[0];
@@ -107,7 +99,6 @@ const getPictureAndSave = () => {
     }
     return knex('images').orderByRaw('RANDOM()').limit(1)
     .then(success => {
-      // return success[0].url;
       return {
         id: success[0].id,
         url: success[0].url,
