@@ -74,7 +74,7 @@ app
         $mdSidenav('left').close();
       };
       $scope.$on('$stateChangeStart', (event, toState, toParams, fromState, fromParams, options) => {
-        if (fromState.name === 'index.image') {
+        if (fromState.name === 'index.image' && toState.name !== 'index.image') {
           $scope.autoChange.interval && $interval.cancel($scope.autoChange.interval);
         }
       });

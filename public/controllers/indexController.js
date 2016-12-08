@@ -6,6 +6,21 @@ app
       if($localStorage.autoShowHelpInfo && !$scope.historyIndex) {
         $scope.showHelpDialog();
       };
+      $scope.progress = {
+        circular: 0,
+      };
+      const interval = () => {
+
+        $scope.progress.circular = 0;
+        return $interval(() => {
+          $scope.progress.circular += 1;
+          // console.log($scope.progress);
+          if($scope.progress.circular >= 100) {
+            $scope.progress.circular = 0;
+            $scope.random(true);
+          }
+        }, 100);
+      };
       let isGetImagesRunning = false;
       $scope.getImages = () => {
         if ($scope.images.length > 15 || isGetImagesRunning) {
@@ -61,9 +76,10 @@ app
         if (!fromInterval) {
           $scope.autoChange.interval && $interval.cancel($scope.autoChange.interval);
           if ($scope.autoChange.status) {
-            $scope.autoChange.interval = $interval(() => {
-              $scope.random(true);
-            }, 10 * 1000);
+            $scope.autoChange.interval = interval();
+            // $scope.autoChange.interval = $interval(() => {
+            //   $scope.random(true);
+            // }, 10 * 1000);
           }
         }
         $state.go('index.image', { id: $scope.images[0].id });
@@ -89,9 +105,10 @@ app
           $scope.autoChange.interval && $interval.cancel($scope.autoChange.interval);
           return;
         }
-        $scope.autoChange.interval = $interval(() => {
-          $scope.random(true);
-        }, 10 * 1000);
+        $scope.autoChange.interval = interval();
+        // $scope.autoChange.interval = $interval(() => {
+        //   $scope.random(true);
+        // }, 10 * 1000);
       });
     }
   ]);
