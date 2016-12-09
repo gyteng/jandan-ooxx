@@ -1,6 +1,6 @@
 {
   "name": "jandan-ooxx",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "",
   "main": "server.js",
   "scripts": {
@@ -9,7 +9,9 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "body-parser": "^1.15.2",
     "cheerio": "^0.22.0",
+    "compression": "^1.6.2",
     "ejs": "^2.5.3",
     "express": "^4.14.0",
     "knex": "^0.12.6",

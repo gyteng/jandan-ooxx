@@ -97,7 +97,9 @@ const getPictureAndSave = () => {
       const image = newImages.splice(0, 1)[0];
       return image;
     }
-    return knex('images').orderByRaw('RANDOM()').limit(1)
+    return knex('images').orderByRaw('RANDOM()').limit(1).where({
+      status: 0,
+    })
     .then(success => {
       return {
         id: success[0].id,

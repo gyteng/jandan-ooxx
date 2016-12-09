@@ -39,3 +39,5 @@ jspm_packages
 
 db/*
 !db/.gitkeep
+
+password.json
