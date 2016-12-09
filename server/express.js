@@ -33,10 +33,16 @@ app.get('/image/:id', (req, res) => {
   });
 });
 
+const version = require('../package').version;
+
 app.get('*',
   (req, res) => {
-    res.render('index');
+    res.render('index', {
+      version,
+    });
   }
 );
 
-app.listen(56000, '0.0.0.0', () => {});
+app.listen(56000, '0.0.0.0', () => {
+  console.log('system start.');
+});
