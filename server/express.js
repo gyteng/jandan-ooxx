@@ -45,7 +45,6 @@ app.get('/image/:id', (req, res) => {
 const password = require('../password').password;
 
 app.delete('/image/:id', (req, res) => {
-  console.log(req.body);
   const id = req.params.id;
   const pwd = req.body.password;
   if(password !== pwd) {
@@ -72,3 +71,5 @@ app.get('*',
 app.listen(56000, '0.0.0.0', () => {
   console.log('system start.');
 });
+
+exports.app = app;
