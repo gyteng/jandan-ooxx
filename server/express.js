@@ -6,6 +6,8 @@ const express = require('express');
 const path = require('path');
 const app = express();
 
+exports.app = app;
+
 app.use(bodyParser.json());
 app.use(compression());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -58,6 +60,8 @@ app.delete('/image/:id', (req, res) => {
   res.send('success');
 });
 
+require('./api');
+
 const version = require('../package').version;
 
 app.get('*',
@@ -71,5 +75,3 @@ app.get('*',
 app.listen(56000, '0.0.0.0', () => {
   console.log('system start.');
 });
-
-exports.app = app;

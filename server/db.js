@@ -10,6 +10,7 @@ knex.schema.createTableIfNotExists('images', table => {
   table.increments('id').primary();
   table.string('url').unique();
   table.integer('status').defaultTo(0);
+  table.datetime('create');
 }).then();
 
 exports.knex = knex;
