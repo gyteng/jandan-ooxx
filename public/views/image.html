@@ -2,13 +2,13 @@
     layout-fill
     layout="row"
     layout-align="center center"
-    ng-click="random()"
+    ng-click="randomImage()"
     md-swipe-left="next()"
     md-swipe-right="prev()"
     style="user-select: none;"
     >
-  <img ng-src="{{currentImage.url}}"></img>
+  <img ng-src="{{public.currentImage.url}}"></img>
   <div style="position: absolute; left: 15px; bottom: 10px; color:#333; opacity:0.3; font-size:32px;">
-    {{currentImage.id}}
+    {{public.currentImage.id}}
   </div>
 </div>

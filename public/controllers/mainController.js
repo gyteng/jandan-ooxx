@@ -80,6 +80,10 @@ app
       });
 
 
+
+
+
+
       $scope.public = {
         currentImage: {},
         images: [],
@@ -95,6 +99,12 @@ app
           return success;
         });
       };
+      $scope.getImageById = (id) => {
+        return $http.get('/api/image/' + id).then(success => {
+          $scope.public.images.push(success.data);
+          return success;
+        });
+      };
       $scope.$watch('public.images', () => {
         if($scope.public.images.length < 15) {
           $scope.getImage();
@@ -103,14 +113,34 @@ app
       $scope.addHistory = (image) => {
         $scope.public.history.push(image);
       };
-      $scope.setCurrentImage = () => {
-        
+      $scope.setCurrentImage = (id) => {
+        if(!id) {
+          if($scope.public.images.length) {
+            $scope.public.currentImage = $scope.public.images[0];
+          } else {
+            $scope.getImage.then(() => {
+              $scope.setCurrentImage();
+            });
+          }
+        } else {
+          const image = $scope.public.images.filter(f => {
+            return f.id === id;
+          })[0];
+          if(image) {
+            $scope.public.currentImage = image;
+          } else {
+            $scope.getImageById(id).then(() => {
+              $scope.setCurrentImage(id);
+            });
+          }
+        }
       };
       $scope.randomImage = () => {
         if($scope.public.images.length > 1) {
-          const image = $scope.public.images.splice(0, 1)[0];
-          $scope.public.currentImage = image;
-          $scope.addHistory(image);
+          $scope.public.images.splice(0, 1);
+          $scope.public.currentImage = $scope.public.images[0];
+          $scope.addHistory($scope.public.images[0]);
+          $state.go('index.image', { id: $scope.public.currentImage.id });
         } else {
           $scope.getImage().then(() => {
             $scope.randomImage();

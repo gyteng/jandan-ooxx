@@ -37,9 +37,8 @@ app
       });
 
       $scope.toImage = (index) => {
-        $scope.setHistoryIndex(true);
-        $scope.setIndex(index);
-        $state.go('index');
+        const id = $scope.public.history[index].id;
+        $state.go('index.image', { id });
       };
     }
   ])
