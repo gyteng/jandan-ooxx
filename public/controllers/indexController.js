@@ -14,7 +14,6 @@ app
         $scope.progress.circular = 0;
         return $interval(() => {
           $scope.progress.circular += 1;
-          // console.log($scope.progress);
           if($scope.progress.circular >= 100) {
             $scope.progress.circular = 0;
             $scope.random(true);
@@ -27,13 +26,17 @@ app
           return Promise.resolve();
         }
         isGetImagesRunning = true;
-        return $http.get('/random').then(success => {
+        return $http.get('/api/image', {
+          params: { number: 15 }
+        }).then(success => {
           isGetImagesRunning = false;
           if (!$scope.images.length) {
-            $localStorage.imagesHistory.push(success.data);
+            $localStorage.imagesHistory.push(success.data[0]);
             $scope.setIndex(0);
           }
-          $scope.images.push(success.data);
+          success.data.forEach(f => {
+            $scope.images.push(f);
+          });
           $scope.getImages();
           return Promise.resolve();
         }).catch(() => {
