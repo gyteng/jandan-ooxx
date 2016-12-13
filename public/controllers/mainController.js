@@ -165,7 +165,7 @@ app
         if(index > 1) {
           $scope.public.addToHistory = false;
           const id = $scope.public.history[index - 1].id;
-          $scope.setCurrentImage(id);
+          // $scope.setCurrentImage(id);
           $state.go('index.image', { id });
         }
       };
@@ -179,7 +179,7 @@ app
         if(index < $scope.public.history.length - 1) {
           $scope.public.addToHistory = false;
           const id = $scope.public.history[index + 1].id;
-          $scope.setCurrentImage(id);
+          // $scope.setCurrentImage(id);
           $state.go('index.image', { id });
         } else {
           $scope.randomImage();
