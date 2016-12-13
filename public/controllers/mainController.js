@@ -76,8 +76,8 @@ app
 
 
 
-
-
+      $scope.imageUrlPreload = 60;
+      $scope.imagePreload = 15;
       $scope.public = {
         addToHistory: true,
         currentImage: {},
@@ -86,7 +86,7 @@ app
       };
       $scope.getImage = () => {
         return $http.get('/api/image', {
-          params: { number: 60 }
+          params: { number: $scope.imageUrlPreload - $scope.public.images.length }
         }).then(success => {
           success.data.forEach(f => {
             if(!$scope.public.images.filter(img => { return img.id === f.id; })[0]) {
@@ -102,8 +102,8 @@ app
           return success;
         });
       };
-      $scope.$watch('public.images', () => {
-        if($scope.public.images.length < 15) {
+      $scope.$watch('public.images.length', () => {
+        if($scope.public.images.length < $scope.imageUrlPreload / 2) {
           $scope.getImage();
         }
       });
