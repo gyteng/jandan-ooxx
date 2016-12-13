@@ -85,6 +85,7 @@ app
 
 
       $scope.public = {
+        addToHistory: true,
         currentImage: {},
         images: [],
         history: $localStorage.imagesHistory,
@@ -111,26 +112,39 @@ app
         }
       });
       $scope.addHistory = (image) => {
+        $scope.public.history = $scope.public.history.filter(f => {
+          return f.id !== image.id;
+        });
         $scope.public.history.push(image);
+        if($scope.public.history.length > 60) {
+          $scope.public.history.splice(0, $scope.public.history.length - 60);
+        }
       };
       $scope.setCurrentImage = (id) => {
         if(!id) {
           if($scope.public.images.length) {
             $scope.public.currentImage = $scope.public.images[0];
+            $scope.addHistory($scope.public.currentImage);
           } else {
             $scope.getImage.then(() => {
               $scope.setCurrentImage();
             });
           }
         } else {
+          const addToHistory = $scope.public.addToHistory;
           const image = $scope.public.images.filter(f => {
             return f.id === id;
           })[0];
           if(image) {
             $scope.public.currentImage = image;
+            if(addToHistory) {
+              $scope.addHistory($scope.public.currentImage);
+            } else {
+              $scope.public.addToHistory = true;
+            }
           } else {
             $scope.getImageById(id).then(() => {
-              $scope.setCurrentImage(id);
+              $scope.setCurrentImage(id, addToHistory);
             });
           }
         }
@@ -145,6 +159,36 @@ app
           $scope.getImage().then(() => {
             $scope.randomImage();
           });
+        }
+      };
+      $scope.prevImage = () => {
+        let index = null;
+        $scope.public.history.forEach((f, i) => {
+          if(f.id === $scope.public.currentImage.id) {
+            index = i;
+          }
+        });
+        if(index > 1) {
+          $scope.public.addToHistory = false;
+          const id = $scope.public.history[index - 1].id;
+          $scope.setCurrentImage(id);
+          $state.go('index.image', { id });
+        }
+      };
+      $scope.nextImage = () => {
+        let index = null;
+        $scope.public.history.forEach((f, i) => {
+          if(f.id === $scope.public.currentImage.id) {
+            index = i;
+          }
+        });
+        if(index < $scope.public.history.length - 1) {
+          $scope.public.addToHistory = false;
+          const id = $scope.public.history[index + 1].id;
+          $scope.setCurrentImage(id);
+          $state.go('index.image', { id });
+        } else {
+          $scope.randomImage();
         }
       };
     }

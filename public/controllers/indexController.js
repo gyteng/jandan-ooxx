@@ -113,6 +113,14 @@ app
       //   //   $scope.random(true);
       //   // }, 10 * 1000);
       // });
-      console.log('GG');
+      if($state.current.name === 'index') {
+        if($scope.public.images[0]) {
+          $state.go('index.image', { id: $scope.public.images[0].id });
+          return;
+        }
+        $scope.getImage().then(() => {
+          $state.go('index.image', { id: $scope.public.images[0].id });
+        });
+      };
     }
   ]);
