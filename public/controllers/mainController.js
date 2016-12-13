@@ -1,8 +1,8 @@
 const app = require('../index').app;
 
 app
-  .controller('MainController', ['$scope', '$mdSidenav', '$state', '$mdDialog', '$localStorage', '$interval', '$location',
-    ($scope, $mdSidenav, $state, $mdDialog, $localStorage, $interval, $location) => {
+  .controller('MainController', ['$scope', '$mdSidenav', '$state', '$mdDialog', '$localStorage', '$interval', '$location', '$http',
+    ($scope, $mdSidenav, $state, $mdDialog, $localStorage, $interval, $location, $http) => {
       $localStorage.$default({
         autoChange: false,
         autoShowHelpInfo: true,
@@ -78,5 +78,30 @@ app
           $scope.autoChange.interval && $interval.cancel($scope.autoChange.interval);
         }
       });
+
+
+      $scope.public = {
+        currentImage: {},
+        images: [],
+        history: $localStorage.imagesHistory,
+      };
+      $scope.getImage = () => {
+        return $http.get('/api/image', {
+          params: { number: 15 }
+        }).then(success => {
+          success.data.forEach(f => {
+            $scope.public.images.push(f);
+          });
+          return success;
+        });
+      };
+      $scope.$watch('public.images', () => {
+        if($scope.public.images.length < 15) {
+          $scope.getImage();
+        }
+      });
+      $scope.randomImage = () => {
+        
+      };
     }
   ]);
