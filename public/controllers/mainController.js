@@ -100,8 +100,22 @@ app
           $scope.getImage();
         }
       });
-      $scope.randomImage = () => {
+      $scope.addHistory = (image) => {
+        $scope.public.history.push(image);
+      };
+      $scope.setCurrentImage = () => {
         
+      };
+      $scope.randomImage = () => {
+        if($scope.public.images.length > 1) {
+          const image = $scope.public.images.splice(0, 1)[0];
+          $scope.public.currentImage = image;
+          $scope.addHistory(image);
+        } else {
+          $scope.getImage().then(() => {
+            $scope.randomImage();
+          });
+        }
       };
     }
   ]);
