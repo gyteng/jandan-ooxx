@@ -86,10 +86,12 @@ app
       };
       $scope.getImage = () => {
         return $http.get('/api/image', {
-          params: { number: 15 }
+          params: { number: 60 }
         }).then(success => {
           success.data.forEach(f => {
-            $scope.public.images.push(f);
+            if(!$scope.public.images.filter(img => { return img.id === f.id; })[0]) {
+              $scope.public.images.push(f);
+            }
           });
           return success;
         });
@@ -146,9 +148,10 @@ app
       $scope.randomImage = () => {
         if($scope.public.images.length > 1) {
           $scope.public.images.splice(0, 1);
-          $scope.public.currentImage = $scope.public.images[0];
-          $scope.addHistory($scope.public.images[0]);
-          $state.go('index.image', { id: $scope.public.currentImage.id });
+          // $scope.public.currentImage = $scope.public.images[0];
+          const image = $scope.public.images[0];
+          $scope.addHistory(image);
+          $state.go('index.image', { id: image.id });
         } else {
           $scope.getImage().then(() => {
             $scope.randomImage();
@@ -165,7 +168,6 @@ app
         if(index > 1) {
           $scope.public.addToHistory = false;
           const id = $scope.public.history[index - 1].id;
-          // $scope.setCurrentImage(id);
           $state.go('index.image', { id });
         }
       };
@@ -179,7 +181,6 @@ app
         if(index < $scope.public.history.length - 1) {
           $scope.public.addToHistory = false;
           const id = $scope.public.history[index + 1].id;
-          // $scope.setCurrentImage(id);
           $state.go('index.image', { id });
         } else {
           $scope.randomImage();
