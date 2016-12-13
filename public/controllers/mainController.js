@@ -15,15 +15,6 @@ app
       $scope.setAutoChange = () => {
         $localStorage.autoChange = $scope.autoChange.status;
       };
-      $scope.historyIndex = false;
-      $scope.setHistoryIndex = (index) => {
-        $scope.historyIndex = index;
-      };
-      $scope.index = 0;
-      $scope.setIndex = (index) => {
-        $scope.index = index;
-      };
-      $scope.images = [];
       $scope.openMenu = () => {
         $mdSidenav('left').toggle();
       };
@@ -79,6 +70,9 @@ app
         }
       });
 
+      if($localStorage.autoShowHelpInfo) {
+        $scope.showHelpDialog();
+      };
 
 
 
