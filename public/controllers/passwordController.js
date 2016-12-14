@@ -5,11 +5,16 @@ app
     ($scope, $state, $stateParams, $http) => {
       $scope.manager = {
         password: '',
-        keypress: function() {
-
+        keypress: function(e) {
+          if(e.keyCode === 13) {
+            $scope.checkPassword();
+          }
         },
       };
       $scope.checkPassword = () => {
+        if(!$scope.manager.password) {
+          return;
+        }
         $http.post('/api/login', {
           password: $scope.manager.password,
         }).then(() => {
