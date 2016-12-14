@@ -3,7 +3,7 @@
      <div class="md-toolbar-tools">
        <h2>帮助</h2>
        <span flex></span>
-       <md-button class="md-icon-button" ng-click="closeDialog()">
+       <md-button class="md-icon-button" ng-click="closeHelpDialog()">
          <md-icon class="material-icons">close</md-icon>
        </md-button>
      </div>
@@ -15,7 +15,7 @@
           <div>右滑显示上一张图</div>
           <div>左滑显示下一张图</div>
           <md-divider ng-if="!$last"></md-divider>
-          <md-switch ng-model="helpDialog.autoShow" aria-label="switch" ng-change="setHelpInfo()">
+          <md-switch ng-model="public.settings.autoShowHelpInfo" aria-label="switch">
             每次启动时显示此提示
           </md-switch>
         </div>

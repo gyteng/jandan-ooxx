@@ -4,26 +4,33 @@ app
   .controller('MainController', ['$scope', '$mdSidenav', '$state', '$mdDialog', '$localStorage', '$interval', '$location', '$http',
     ($scope, $mdSidenav, $state, $mdDialog, $localStorage, $interval, $location, $http) => {
       $localStorage.$default({
-        autoChange: false,
-        autoShowHelpInfo: true,
+        settings: {
+          autoChange: false,
+          autoShowHelpInfo: true,
+        },
         imagesHistory: [],
       });
-      $scope.autoChange = {
-        status: $localStorage.autoChange,
-        interval: null,
+      $scope.public = {
+        addToHistory: true,
+        currentImage: {},
+        images: [],
+        history: $localStorage.imagesHistory,
+        settings: $localStorage.settings,
       };
-      $scope.setAutoChange = () => {
-        $localStorage.autoChange = $scope.autoChange.status;
-      };
-      $scope.openMenu = () => {
-        $mdSidenav('left').toggle();
-      };
-      $scope.helpDialog = {
-        autoShow: $localStorage.autoShowHelpInfo,
-      };
-      $scope.setHelpInfo = () => {
-        $localStorage.autoShowHelpInfo = $scope.helpDialog.autoShow;
-      };
+      // $scope.autoChange = {
+      //   status: $localStorage.autoChange,
+      //   interval: null,
+      // };
+      // $scope.setAutoChange = () => {
+      //   $localStorage.autoChange = $scope.autoChange.status;
+      // };
+
+      // $scope.helpDialog = {
+      //   autoShow: $localStorage.autoShowHelpInfo,
+      // };
+      // $scope.setHelpInfo = () => {
+      //   $localStorage.autoShowHelpInfo = $scope.helpDialog.autoShow;
+      // };
       $scope.showHelpDialog = () => {
         $scope.dialog = $mdDialog.show({
           preserveScope: true,
@@ -33,10 +40,22 @@ app
           clickOutsideToClose: true,
         });
       };
-      $scope.closeDialog = () => {
+      $scope.closeHelpDialog = () => {
         $mdDialog.hide($scope.dialog);
       };
-      $scope.menus = [{
+      //
+      // $scope.$on('$stateChangeStart', (event, toState, toParams, fromState, fromParams, options) => {
+      //   if (fromState.name === 'index.image' && toState.name !== 'index.image') {
+      //     $scope.autoChange.interval && $interval.cancel($scope.autoChange.interval);
+      //   }
+      // });
+      //
+      if($scope.public.settings.autoShowHelpInfo) {
+        $scope.showHelpDialog();
+      };
+
+
+      $scope.menus = [ {
         name: '首页',
         icon: 'home',
         click: () => {
@@ -60,30 +79,16 @@ app
           window.location = 'https://github.com/gyteng/jandan-ooxx';
         },
       } ];
+      $scope.openMenu = () => {
+        $mdSidenav('left').toggle();
+      };
       $scope.menuClick = index => {
         $scope.menus[index].click();
         $mdSidenav('left').close();
       };
-      $scope.$on('$stateChangeStart', (event, toState, toParams, fromState, fromParams, options) => {
-        if (fromState.name === 'index.image' && toState.name !== 'index.image') {
-          $scope.autoChange.interval && $interval.cancel($scope.autoChange.interval);
-        }
-      });
-
-      if($localStorage.autoShowHelpInfo) {
-        $scope.showHelpDialog();
-      };
-
-
 
       $scope.imageUrlPreload = 60;
       $scope.imagePreload = 15;
-      $scope.public = {
-        addToHistory: true,
-        currentImage: {},
-        images: [],
-        history: $localStorage.imagesHistory,
-      };
       $scope.getImage = () => {
         return $http.get('/api/image', {
           params: { number: $scope.imageUrlPreload - $scope.public.images.length }
