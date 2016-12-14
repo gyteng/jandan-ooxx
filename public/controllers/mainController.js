@@ -10,6 +10,12 @@ app
         },
         imagesHistory: [],
       });
+      if(!$localStorage.settings) {
+        $localStorage.settings = {
+          autoChange: false,
+          autoShowHelpInfo: true,
+        };
+      }
       $scope.public = {
         addToHistory: true,
         currentImage: {},
