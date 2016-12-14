@@ -1,5 +1,13 @@
 const app = require('./express').app;
 const knex = require('./db').knex;
+const password = require('../config').conf.password;
+
+const isLogin = (req, res, next) => {
+  if(req.session.isLogin) {
+    return next();
+  }
+  res.status(401).end();
+};
 
 app.get('/api/image', (req, res) => {
   const number = req.query.number || 1;
@@ -27,6 +35,25 @@ app.get('/api/image/:id', (req, res) => {
   });
 });
 
-app.post('/api/login');
+app.get('/api/login', (req, res) => {
+  return res.send({isLogin: !!req.session.isLogin});
+});
+
+app.post('/api/login', (req, res) => {
+  const pwd = req.body.password;
+  delete req.session.isLogin;
+  if(pwd === password) {
+    req.session.isLogin = true;
+    res.send('success');
+    return;
+  }
+  res.status(401).end();
+});
+
+app.post('/api/logout', (req, res) => {
+  delete req.session.isLogin;
+  res.send('success');
+});
+
 app.post('/api/image');
 app.delete('/api/image/:id');

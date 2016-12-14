@@ -25,6 +25,10 @@ app.config(['$stateProvider', $stateProvider => {
       url: '/history',
       controller: 'HistoryController',
       templateUrl: '/public/views/history.html',
+    }).state('password', {
+      url: '/password',
+      controller: 'PasswordController',
+      templateUrl: '/public/views/password.html',
     });
 }]);
 
