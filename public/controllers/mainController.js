@@ -28,8 +28,8 @@ app
       // $scope.helpDialog = {
       //   autoShow: $localStorage.autoShowHelpInfo,
       // };
-      // $scope.setHelpInfo = () => {
-      //   $localStorage.autoShowHelpInfo = $scope.helpDialog.autoShow;
+      // $scope.setAutoShowHelpInfo = () => {
+      //   $localStorage.settings.autoShowHelpInfo = $scope.public.settings.autoShowHelpInfo;
       // };
       $scope.showHelpDialog = () => {
         $scope.dialog = $mdDialog.show({
