@@ -15,3 +15,6 @@
     {{public.currentImage.id}}
   </div>
 </div>
+<md-button style="position: fixed;" class="md-fab md-mini md-fab-bottom-right" ng-click="favorite()" ng-style="{'background-color': public.isFavorite?'#ddd':'#ddd'}">
+    <md-icon class="material-icons" ng-style="{color: public.isFavorite?'#ff4081':'#ff4081'}">{{ public.isFavorite ? 'favorite' : 'favorite_border' }}</md-icon>
+</md-button>
