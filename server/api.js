@@ -55,5 +55,9 @@ app.post('/api/logout', (req, res) => {
   res.send('success');
 });
 
-app.post('/api/image');
+app.put('/api/image/:id', (req, res) => {
+  const id = req.params.id;
+  console.log(`${ req.ip } [${ id }]`);
+  res.send();
+});
 app.delete('/api/image/:id');

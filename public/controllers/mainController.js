@@ -17,20 +17,6 @@ app
         history: $localStorage.imagesHistory,
         settings: $localStorage.settings,
       };
-      // $scope.autoChange = {
-      //   status: $localStorage.autoChange,
-      //   interval: null,
-      // };
-      // $scope.setAutoChange = () => {
-      //   $localStorage.autoChange = $scope.autoChange.status;
-      // };
-
-      // $scope.helpDialog = {
-      //   autoShow: $localStorage.autoShowHelpInfo,
-      // };
-      // $scope.setAutoShowHelpInfo = () => {
-      //   $localStorage.settings.autoShowHelpInfo = $scope.public.settings.autoShowHelpInfo;
-      // };
       $scope.showHelpDialog = () => {
         $scope.dialog = $mdDialog.show({
           preserveScope: true,
@@ -54,7 +40,6 @@ app
         $scope.showHelpDialog();
       };
 
-
       $scope.menus = [ {
         name: '首页',
         icon: 'home',
@@ -72,6 +57,10 @@ app
         name: '帮助',
         icon: 'help_outline',
         click: () => $scope.showHelpDialog()
+      }, {
+        name: '管理',
+        icon: 'code',
+        click: () => $state.go('password')
       }, {
         name: '关于本项目',
         icon: 'code',
