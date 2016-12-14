@@ -60,4 +60,12 @@ app.put('/api/image/:id', (req, res) => {
   console.log(`${ req.ip } [${ id }]`);
   res.send();
 });
-app.delete('/api/image/:id');
+
+app.delete('/api/image/:id', isLogin, (req, res) => {
+  const id = req.params.id;
+  knex('images').update({ status: -1 }).where({ id }).then(success => {
+    req.send('success');
+  }).catch(() => {
+    res.status(500).end();
+  });
+});
