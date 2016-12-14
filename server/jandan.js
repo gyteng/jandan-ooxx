@@ -112,7 +112,7 @@ const getPictureAndSave = () => {
 setInterval(() => {
   knex('images').count('url AS count')
   .then(count => {
-    if(count[0].count < 10000) {
+    if(count[0].count < 30000) {
       getPictureFromJandan(true).then();
     }
   });

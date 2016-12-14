@@ -1,8 +1,8 @@
 const app = require('../index').app;
 
 app
-  .controller('ImageController', ['$scope', '$http', '$state', '$stateParams', '$timeout', '$interval', '$localStorage',
-    ($scope, $http, $state, $stateParams, $timeout, $interval, $localStorage) => {
+  .controller('ImageController', ['$scope', '$stateParams',
+    ($scope, $stateParams) => {
       const id = $stateParams.id;
       $scope.setCurrentImage(id);
     }

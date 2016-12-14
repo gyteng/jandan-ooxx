@@ -41,3 +41,4 @@ db/*
 !db/.gitkeep
 
 password.json
+config.js
