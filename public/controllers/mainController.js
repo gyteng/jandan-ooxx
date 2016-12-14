@@ -11,12 +11,20 @@ app
         imagesHistory: [],
       });
       $scope.public = {
+        isAdmin : false,
         addToHistory: true,
         currentImage: {},
         images: [],
         history: $localStorage.imagesHistory,
         settings: $localStorage.settings,
       };
+      $scope.checkAdmin = () => {
+        $http.get('/api/login').then(success => {
+          $scope.public.isAdmin = success.data.isLogin;
+        });
+      };
+      $scope.checkAdmin();
+
       $scope.showHelpDialog = () => {
         $scope.dialog = $mdDialog.show({
           preserveScope: true,
@@ -59,7 +67,7 @@ app
         click: () => $scope.showHelpDialog()
       }, {
         name: '管理',
-        icon: 'code',
+        icon: 'settings',
         click: () => $state.go('password')
       }, {
         name: '关于本项目',
@@ -68,6 +76,25 @@ app
           window.location = 'https://github.com/gyteng/jandan-ooxx';
         },
       } ];
+      $scope.$watch('public.isAdmin', () => {
+        console.log($scope.public.isAdmin);
+        if($scope.public.isAdmin) {
+          $scope.menus[3].name = '退出';
+          $scope.menus[3].icon = 'exit_to_app';
+          $scope.menus[3].click = () => {
+            $http.post('/api/logout').then(() => {
+              $scope.public.isAdmin = false;
+            });
+          };
+          return;
+        }
+        $scope.menus[3].name = '管理';
+        $scope.menus[3].icon = 'settings';
+        $scope.menus[3].click = () => {
+          $state.go('password');
+        };
+        return;
+      });
       $scope.openMenu = () => {
         $mdSidenav('left').toggle();
       };
