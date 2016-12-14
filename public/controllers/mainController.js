@@ -12,6 +12,7 @@ app
       });
       $scope.public = {
         isAdmin : false,
+        isFavorite: false,
         addToHistory: true,
         currentImage: {},
         images: [],
@@ -46,6 +47,9 @@ app
       //
       if($scope.public.settings.autoShowHelpInfo) {
         $scope.showHelpDialog();
+      };
+      $scope.favorite = () => {
+        $scope.public.isFavorite = true;
       };
 
       $scope.menus = [ {

@@ -5,6 +5,7 @@ app
     ($scope, $stateParams, $http) => {
       const id = $stateParams.id;
       $scope.setCurrentImage(id);
+      $scope.public.isFavorite = false;
       $http.put('/api/image/' + id).then().catch();
     }
   ])
