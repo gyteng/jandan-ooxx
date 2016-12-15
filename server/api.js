@@ -57,15 +57,26 @@ app.post('/api/logout', (req, res) => {
 
 app.post('/api/image/view', (req, res) => {
   const id = req.body.id;
-  console.log(`${ req.ip } [ ${ id } ]`);
   res.send();
   id.forEach(f => {
     knex('view').insert({
       imageId: f,
       ip: req.ip,
+      session: req.session.id,
       create: Date.now(),
     }).then().catch();
   });
+});
+
+app.post('/api/image/favorite', (req, res) => {
+  const id = req.body.id;
+  res.send();
+  knex('favorite').insert({
+    imageId: id,
+    ip: req.ip,
+    session: req.session.id,
+    create: Date.now(),
+  }).then().catch();
 });
 
 app.delete('/api/image/:id', isLogin, (req, res) => {

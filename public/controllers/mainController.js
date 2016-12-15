@@ -51,6 +51,9 @@ app
       };
       $scope.favorite = () => {
         $scope.public.isFavorite = true;
+        $http.post('/api/image/favorite', {
+          id: $scope.public.currentImage.id,
+        }).then().catch();
       };
 
       $scope.menus = [ {

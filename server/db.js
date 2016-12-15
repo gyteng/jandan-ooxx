@@ -17,7 +17,17 @@ knex.schema.createTableIfNotExists('view', table => {
   table.increments('id').primary();
   table.integer('imageId');
   table.string('ip');
+  table.string('session');
   table.datetime('create');
+}).then();
+
+knex.schema.createTableIfNotExists('favorite', table => {
+  table.increments('id').primary();
+  table.integer('imageId');
+  table.string('ip');
+  table.string('session');
+  table.datetime('create');
+  table.integer('status').defaultTo(0);
 }).then();
 
 exports.knex = knex;
