@@ -18,3 +18,18 @@
 <md-button ng-hide="public.isAdmin" style="position: fixed;" class="md-fab md-mini md-fab-bottom-right" ng-click="favorite()" ng-style="{'background-color': public.isFavorite?'#ddd':'#ddd'}">
     <md-icon class="material-icons" ng-style="{color: public.isFavorite?'#ff4081':'#ff4081'}">{{ public.isFavorite ? 'favorite' : 'favorite_border' }}</md-icon>
 </md-button>
+<md-fab-speed-dial style="position: fixed;" class="md-fab-bottom-right md-scale" ng-show="public.isAdmin" md-open="isManagerMenuOpen" md-direction="up">
+  <md-fab-trigger>
+    <md-button aria-label="menu" class="md-fab md-mini">
+      <md-icon class="material-icons">build</md-icon>
+    </md-button>
+  </md-fab-trigger>
+  <md-fab-actions>
+    <md-button aria-label="done" class="md-fab md-raised md-mini">
+      <md-icon class="material-icons">done</md-icon>
+    </md-button>
+    <md-button aria-label="del" class="md-fab md-raised md-mini">
+      <md-icon class="material-icons">close</md-icon>
+    </md-button>
+  </md-fab-actions>
+</md-fab-speed-dial>
