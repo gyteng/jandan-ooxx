@@ -6,12 +6,24 @@ const knex = require('knex')({
   useNullAsDefault: true,
 });
 
-knex.schema.createTableIfNotExists('images', table => {
-  table.increments('id').primary();
-  table.string('url').unique();
-  table.integer('status').defaultTo(0);
-  table.datetime('create');
-}).then();
+knex.schema.hasTable('images').then(exist => {
+  if(!exist) {
+    knex.schema.createTableIfNotExists('images', table => {
+      table.increments('id').primary();
+      table.string('url').unique();
+      table.integer('status').defaultTo(0);
+      table.datetime('create');
+    }).then();
+    return true;
+  }
+  return knex.schema.hasColumn('images', 'create');
+}).then(exist => {
+  if(!exist) {
+    knex.schema.table('images', table => {
+      table.datetime('create');
+    }).then();
+  }
+});
 
 knex.schema.createTableIfNotExists('view', table => {
   table.increments('id').primary();

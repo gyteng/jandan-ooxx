@@ -9,6 +9,21 @@ app
       $scope.public.view.push(id);
 
       $scope.isManagerMenuOpen = false;
+
+      $scope.verifyImage = () => {
+        $http.put('/api/image/' + id, {
+          status: 1,
+        }).then(() => {
+          $scope.randomImage();
+        }).catch();
+      };
+      $scope.deleteImage = () => {
+        $http.put('/api/image/' + id, {
+          status: -1,
+        }).then(() => {
+          $scope.randomImage();
+        }).catch();
+      };
     }
   ])
 ;

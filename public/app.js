@@ -5,4 +5,5 @@ require('./controllers/mainController');
 require('./controllers/indexController');
 require('./controllers/imageController');
 require('./controllers/historyController');
+require('./controllers/weekController');
 require('./controllers/passwordController');

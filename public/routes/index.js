@@ -25,7 +25,13 @@ app.config(['$stateProvider', $stateProvider => {
       url: '/history',
       controller: 'HistoryController',
       templateUrl: '/public/views/history.html',
-    }).state('password', {
+    })
+    .state('week', {
+      url: '/week',
+      controller: 'WeekController',
+      templateUrl: '/public/views/week.html',
+    })
+    .state('password', {
       url: '/password',
       controller: 'PasswordController',
       templateUrl: '/public/views/password.html',

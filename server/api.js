@@ -11,9 +11,20 @@ const isLogin = (req, res, next) => {
 
 app.get('/api/image', (req, res) => {
   const number = req.query.number || 1;
-  return knex('images').select(['id', 'url']).orderByRaw('RANDOM()').limit(number).where({
-    status: 0,
-  }).then(success => {
+  return knex('images').select(['id', 'url']).orderByRaw('RANDOM()').limit(number)
+  .where('status', '>=', 0)
+  .then(success => {
+    res.send(success);
+  }).catch(() => {
+    res.status(500).end();
+  });
+});
+
+app.get('/api/image/week', (req, res) => {
+  const number = req.query.number || 1;
+  return knex('images').select(['id', 'url']).orderByRaw('RANDOM()').limit(number).orderBy('create', 'desc')
+  .where('status', '>=', 1)
+  .then(success => {
     res.send(success);
   }).catch(() => {
     res.status(500).end();
@@ -22,10 +33,10 @@ app.get('/api/image', (req, res) => {
 
 app.get('/api/image/:id', (req, res) => {
   const id = req.params.id;
-  return knex('images').select(['id', 'url']).where({
-    id,
-    status: 0,
-  }).then(success => {
+  return knex('images').select(['id', 'url'])
+  .where({ id })
+  .where('status', '>=', 0)
+  .then(success => {
     if(success.length) {
       return res.send(success[0]);
     }
@@ -79,11 +90,15 @@ app.post('/api/image/favorite', (req, res) => {
   }).then().catch();
 });
 
-app.delete('/api/image/:id', isLogin, (req, res) => {
+app.put('/api/image/:id', isLogin, (req, res) => {
   const id = req.params.id;
-  knex('images').update({ status: -1 }).where({ id }).then(success => {
-    req.send('success');
-  }).catch(() => {
+  const status = +req.body.status;
+  knex('images').update({
+    status,
+    create: Date.now(),
+   }).where({ id }).then(success => {
+    res.send('success');
+  }).catch((err) => {
     res.status(500).end();
   });
 });

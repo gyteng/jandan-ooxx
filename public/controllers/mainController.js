@@ -70,6 +70,10 @@ app
         icon: 'history',
         click: () => $state.go('history')
       }, {
+        name: '本周热门',
+        icon: 'history',
+        click: () => $state.go('week')
+      }, {
         name: '帮助',
         icon: 'help_outline',
         click: () => $scope.showHelpDialog()
@@ -85,20 +89,19 @@ app
         },
       } ];
       $scope.$watch('public.isAdmin', () => {
-        console.log($scope.public.isAdmin);
         if($scope.public.isAdmin) {
-          $scope.menus[3].name = '退出';
-          $scope.menus[3].icon = 'exit_to_app';
-          $scope.menus[3].click = () => {
+          $scope.menus[4].name = '退出';
+          $scope.menus[4].icon = 'exit_to_app';
+          $scope.menus[4].click = () => {
             $http.post('/api/logout').then(() => {
               $scope.public.isAdmin = false;
             });
           };
           return;
         }
-        $scope.menus[3].name = '管理';
-        $scope.menus[3].icon = 'settings';
-        $scope.menus[3].click = () => {
+        $scope.menus[4].name = '管理';
+        $scope.menus[4].icon = 'settings';
+        $scope.menus[4].click = () => {
           $state.go('password');
         };
         return;
@@ -168,7 +171,7 @@ app
               $scope.public.addToHistory = true;
             }
           } else {
-            $scope.getImageById(id).then(() => {
+            $scope.getImageById(id).then((s) => {
               $scope.setCurrentImage(id, addToHistory);
             });
           }
