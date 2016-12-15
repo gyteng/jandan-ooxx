@@ -55,10 +55,17 @@ app.post('/api/logout', (req, res) => {
   res.send('success');
 });
 
-app.put('/api/image/:id', (req, res) => {
-  const id = req.params.id;
-  console.log(`${ req.ip } [${ id }]`);
+app.post('/api/image/view', (req, res) => {
+  const id = req.body.id;
+  console.log(`${ req.ip } [ ${ id } ]`);
   res.send();
+  id.forEach(f => {
+    knex('view').insert({
+      imageId: f,
+      ip: req.ip,
+      create: Date.now(),
+    }).then().catch();
+  });
 });
 
 app.delete('/api/image/:id', isLogin, (req, res) => {

@@ -13,4 +13,11 @@ knex.schema.createTableIfNotExists('images', table => {
   table.datetime('create');
 }).then();
 
+knex.schema.createTableIfNotExists('view', table => {
+  table.increments('id').primary();
+  table.integer('imageId');
+  table.string('ip');
+  table.datetime('create');
+}).then();
+
 exports.knex = knex;

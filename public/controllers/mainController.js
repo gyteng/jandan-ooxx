@@ -16,6 +16,7 @@ app
         addToHistory: true,
         currentImage: {},
         images: [],
+        view: [],
         history: $localStorage.imagesHistory,
         settings: $localStorage.settings,
       };
@@ -211,5 +212,12 @@ app
           $scope.randomImage();
         }
       };
+      $interval(() => {
+        if(!$scope.public.view.length) { return; }
+        $http.post('/api/image/view', {
+          id: $scope.public.view,
+        });
+        $scope.public.view = [];
+      }, 10 * 1000);
     }
   ]);
