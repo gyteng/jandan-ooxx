@@ -50,6 +50,9 @@
                 </md-content>
                 <div style="position: absolute; right: 5px; bottom: 5px; color:#555; font-size:12px;"><%= version%></div>
             </md-sidenav>
+            <div layout-fill layout="row" layout-align="center center" ng-if="public.isLoading">
+                <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+            </div>
             <md-content layout="row" flex ui-view>
             </md-content>
         </section>

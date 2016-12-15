@@ -13,16 +13,14 @@ app
       $scope.verifyImage = () => {
         $http.put('/api/image/' + id, {
           status: 1,
-        }).then(() => {
-          $scope.randomImage();
-        }).catch();
+        }).then().catch();
+        $scope.randomImage();
       };
       $scope.deleteImage = () => {
         $http.put('/api/image/' + id, {
           status: -1,
-        }).then(() => {
-          $scope.randomImage();
-        }).catch();
+        }).then().catch();
+        $scope.randomImage();
       };
     }
   ])

@@ -11,6 +11,7 @@ app
         imagesHistory: [],
       });
       $scope.public = {
+        isLoading: false,
         isAdmin : false,
         isFavorite: false,
         addToHistory: true,
@@ -71,7 +72,7 @@ app
         click: () => $state.go('history')
       }, {
         name: '本周热门',
-        icon: 'history',
+        icon: 'favorite',
         click: () => $state.go('week')
       }, {
         name: '帮助',
@@ -159,6 +160,7 @@ app
             });
           }
         } else {
+          $scope.public.isLoading = true;
           const addToHistory = $scope.public.addToHistory;
           const image = $scope.public.images.filter(f => {
             return f.id === id;
@@ -170,9 +172,12 @@ app
             } else {
               $scope.public.addToHistory = true;
             }
+            $scope.public.isLoading = false;
           } else {
             $scope.getImageById(id).then((s) => {
               $scope.setCurrentImage(id, addToHistory);
+            }).catch(() => {
+              $scope.public.isLoading = false;
             });
           }
         }
@@ -225,5 +230,36 @@ app
         });
         $scope.public.view = [];
       }, 10 * 1000);
+      const loadWeekImages = () => {
+        $http.get('/api/image/week', {
+          params: { number: 60 }
+        }).then(success => {
+          $scope.weekImages = success.data;
+          $scope.weekImages = $scope.weekImages.map(m => {
+            return {
+              id: m.id,
+              url: m.url,
+              width: 1,
+              height: 1,
+              style: { width: '100%', overflow: 'hidden'},
+            };
+          });
+          $scope.weekImages.forEach((f, i) => {
+            const img = new Image();
+            img.onload = () => {
+              $scope.weekImages[i].width = img.width;
+              $scope.weekImages[i].height = img.height;
+              if(img.height < img.width) {
+                $scope.weekImages[i].style = { height: '100%', 'max-width': 'none', 'min-width': 100 / f.height * f.width + '%'};
+              }
+            };
+            img.src = f.url;
+          });
+        });
+      };
+      loadWeekImages();
+      $interval(() => {
+        loadWeekImages();
+      }, 90 * 1000);
     }
   ]);
