@@ -21,6 +21,8 @@ app
         history: $localStorage.imagesHistory,
         settings: $localStorage.settings,
       };
+      // console.log($localStorage);
+      // console.log($scope.public);
       $scope.checkAdmin = () => {
         $http.get('/api/login').then(success => {
           $scope.public.isAdmin = success.data.isLogin;
@@ -40,13 +42,6 @@ app
       $scope.closeHelpDialog = () => {
         $mdDialog.hide($scope.dialog);
       };
-      //
-      // $scope.$on('$stateChangeStart', (event, toState, toParams, fromState, fromParams, options) => {
-      //   if (fromState.name === 'index.image' && toState.name !== 'index.image') {
-      //     $scope.autoChange.interval && $interval.cancel($scope.autoChange.interval);
-      //   }
-      // });
-      //
       if($scope.public.settings.autoShowHelpInfo) {
         $scope.showHelpDialog();
       };
@@ -141,12 +136,12 @@ app
         }
       });
       $scope.addHistory = (image) => {
-        $scope.public.history = $scope.public.history.filter(f => {
+        $localStorage.imagesHistory = $localStorage.imagesHistory.filter(f => {
           return f.id !== image.id;
         });
-        $scope.public.history.push(image);
-        if($scope.public.history.length > 60) {
-          $scope.public.history.splice(0, $scope.public.history.length - 60);
+        $localStorage.imagesHistory.push(image);
+        if($localStorage.imagesHistory.length > 60) {
+          $localStorage.imagesHistory.splice(0, $localStorage.imagesHistory.length - 60);
         }
       };
       $scope.setCurrentImage = (id) => {
@@ -197,27 +192,27 @@ app
       };
       $scope.prevImage = () => {
         let index = null;
-        $scope.public.history.forEach((f, i) => {
+        $localStorage.imagesHistory.forEach((f, i) => {
           if(f.id === $scope.public.currentImage.id) {
             index = i;
           }
         });
         if(index > 1) {
           $scope.public.addToHistory = false;
-          const id = $scope.public.history[index - 1].id;
+          const id = $localStorage.imagesHistory[index - 1].id;
           $state.go('index.image', { id });
         }
       };
       $scope.nextImage = () => {
         let index = null;
-        $scope.public.history.forEach((f, i) => {
+        $localStorage.imagesHistory.forEach((f, i) => {
           if(f.id === $scope.public.currentImage.id) {
             index = i;
           }
         });
-        if(index < $scope.public.history.length - 1) {
+        if(index < $localStorage.imagesHistory.length - 1) {
           $scope.public.addToHistory = false;
-          const id = $scope.public.history[index + 1].id;
+          const id = $localStorage.imagesHistory[index + 1].id;
           $state.go('index.image', { id });
         } else {
           $scope.randomImage();

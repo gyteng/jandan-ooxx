@@ -3,7 +3,7 @@ const app = require('../index').app;
 app
   .controller('HistoryController', ['$scope', '$localStorage', '$state', '$mdMedia',
     ($scope, $localStorage, $state, $mdMedia) => {
-      if(!$scope.public.history.length) {
+      if(!$localStorage.imagesHistory.length) {
         return $state.go('index');
       }
       $scope.divHeightStyle = { height: 100/3 + 'vw' };
