@@ -22,14 +22,20 @@ app.get('/api/image', (req, res) => {
 
 app.get('/api/image/week', (req, res) => {
   const number = req.query.number || 1;
-  knex('favorite').count('images.id AS number').select(['images.id', 'images.url'])
+  knex('favorite').count('images.id AS number').select(['images.id', 'images.url', 'favorite.create'])
   .innerJoin('images', 'images.id', 'favorite.imageId')
   .where('favorite.create', '>=', Date.now() - 7 * 24 * 3600 * 1000)
   .limit(number)
   .groupBy('images.id')
   .orderBy('number', 'desc')
+  .orderBy('favorite.create', 'desc')
   .then(success => {
-    res.send(success);
+    res.send(success.map(m => {
+      return {
+        id: m.id,
+        url: m.url,
+      };
+    }));
   }).catch(() => {
     res.status(500).end();
   });
