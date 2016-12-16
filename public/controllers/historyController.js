@@ -35,7 +35,7 @@ app
       });
 
       $scope.toImage = (index) => {
-        const id = $scope.public.history[index].id;
+        const id = $localStorage.imagesHistory[index].id;
         $scope.public.addToHistory = false;
         $state.go('index.image', { id });
       };
