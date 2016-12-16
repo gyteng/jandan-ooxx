@@ -1,13 +1,11 @@
 <div
-    long-press
-    time-out="600"
     layout-fill
     layout="row"
     layout-align="center center"
-    on-click="randomImage()"
-    on-long-press=""
-    md-swipe-left="nextImage()"
-    md-swipe-right="prevImage()"
+    hm-tap="randomImage()"
+    hm-hold=""
+    hm-swipe-left="nextImage()"
+    hm-swipe-right="prevImage()"
     style="user-select: none;"
     >
   <img ng-src="{{public.currentImage.url}}"></img>

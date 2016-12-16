@@ -1,5 +1,13 @@
 const app = require('../index').app;
 
+app.config(['hammerDefaultOptsProvider', hammerDefaultOptsProvider => {
+  hammerDefaultOptsProvider.set({recognizers: [
+    [Hammer.Tap, {time: 250}],
+    [Hammer.Press, { enable: true}],
+    [Hammer.Swipe, { enable: true}],
+  ] });
+}]);
+
 app.config(['$urlRouterProvider', '$locationProvider',
   ($urlRouterProvider, $locationProvider) => {
     $locationProvider.html5Mode(true);

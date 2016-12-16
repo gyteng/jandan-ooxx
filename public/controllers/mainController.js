@@ -180,7 +180,6 @@ app
       $scope.randomImage = () => {
         if($scope.public.images.length > 1) {
           $scope.public.images.splice(0, 1);
-          // $scope.public.currentImage = $scope.public.images[0];
           const image = $scope.public.images[0];
           $scope.addHistory(image);
           $state.go('index.image', { id: image.id });
