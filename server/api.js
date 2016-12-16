@@ -22,8 +22,12 @@ app.get('/api/image', (req, res) => {
 
 app.get('/api/image/week', (req, res) => {
   const number = req.query.number || 1;
-  return knex('images').select(['id', 'url']).orderByRaw('RANDOM()').limit(number).orderBy('create', 'desc')
-  .where('status', '>=', 1)
+  knex('favorite').count('images.id AS number').select(['images.id', 'images.url'])
+  .innerJoin('images', 'images.id', 'favorite.imageId')
+  .where('favorite.create', '>=', Date.now() - 7 * 24 * 3600 * 1000)
+  .limit(number)
+  .groupBy('images.id')
+  .orderBy('number', 'desc')
   .then(success => {
     res.send(success);
   }).catch(() => {
