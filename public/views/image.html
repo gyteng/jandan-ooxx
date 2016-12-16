@@ -29,5 +29,8 @@
     <md-button aria-label="del" class="md-fab md-raised md-mini" ng-click="deleteImage()">
       <md-icon class="material-icons">close</md-icon>
     </md-button>
+    <md-button ng-hide="public.isAdmin" style="position: fixed;" class="md-fab md-mini md-fab-bottom-right" ng-click="favorite()" ng-style="{'background-color': public.isFavorite?'#ddd':'#ddd'}">
+        <md-icon class="material-icons" ng-style="{color: public.isFavorite?'#ff4081':'#ff4081'}">{{ public.isFavorite ? 'favorite' : 'favorite_border' }}</md-icon>
+    </md-button>
   </md-fab-actions>
 </md-fab-speed-dial>
