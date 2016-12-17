@@ -2,9 +2,9 @@ const app = require('../index').app;
 
 app.config(['hammerDefaultOptsProvider', hammerDefaultOptsProvider => {
   hammerDefaultOptsProvider.set({recognizers: [
-    [Hammer.Tap, {time: 250}],
-    [Hammer.Press, { enable: true}],
-    [Hammer.Swipe, { enable: true}],
+    [ Hammer.Tap,   { time: 250} ],
+    [ Hammer.Press, { enable: true} ],
+    [ Hammer.Swipe, { enable: true} ],
   ] });
 }]);
 

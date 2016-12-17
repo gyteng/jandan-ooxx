@@ -114,18 +114,3 @@ app.put('/api/image/:id', isLogin, (req, res) => {
     res.status(500).end();
   });
 });
-
-app.get('/api/test', (req, res) => {
-  knex('images').where({status: -1}).where('id', '>', 0).limit(1).then(s => {
-    res.send(s);
-  }).catch(err => {
-    console.log(err);
-  });
-
-  // knex('images').min('id AS min').then(s => {
-  //   res.send(s);
-  // }).catch(err => {
-  //   console.log(err);
-  // });
-
-});
