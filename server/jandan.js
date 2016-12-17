@@ -6,7 +6,6 @@ let maxPage = null;
 let minPage = 1;
 let getMaxPageTime = null;
 let getPictureFromJandanTime = null;
-const newImages = [];
 const insertDbStatus = [];
 
 const getMaxPage = () => {
@@ -60,13 +59,6 @@ const filterPic = (url, maxPage, minPage) => {
 };
 
 const getPictureFromJandan = (limit) => {
-  // if(insertDbStatus.length >= 100) {
-  //   const successRate = insertDbStatus.filter(f => f === 0).length / insertDbStatus.length;
-  //   console.log(`Rate: ${ successRate }`);
-  //   if(successRate < 0.6) {
-  //     minPage--;
-  //   };
-  // }
   if(limit && getPictureFromJandanTime && Date.now() - getPictureFromJandanTime < 1000) {
     return Promise.resolve();
   }
@@ -77,15 +69,32 @@ const getPictureFromJandan = (limit) => {
   }).then(url => {
     return filterPic(url, maxPage, minPage);
   }).then(url => {
-    knex('images').insert({ url }).then(success => {
-      if(newImages.length < 60) { newImages.push({
-        id: success[0],
-        url,
-      }); }
-      console.log(`添加图片[${ success[0] }][${ url }]`);
-    }).catch(() => {
+    const insert = { url };
+    return knex('images').where({status: -1}).where('id', '>', 0).limit(1).then(success => {
+      if(success.length) {
+        insert.id = success[0].id;
+        return knex('images').min('id AS min').then(success => {
+          let id;
+          if(success[0].min === 1) { id = -1; }
+          else { id = success[0].min - 1; }
+          console.log(`移动图片[${ insert.id } -> ${ id }]`);
+          return knex('images').update({ id }).where({ id: insert.id});
+        });
+      }
+      return;
+    }).then(() => {
+      return knex('images').insert(insert);
+    }).then(success => {
+      console.log(`添加图片[${ success[0] }]`);
+      return;
     });
-    return url;
+
+
+    // knex('images').insert({ url }).then(success => {
+    //   console.log(`添加图片[${ success[0] }][${ url }]`);
+    // }).catch(() => {
+    // });
+    // return url;
   });
 };
 
@@ -93,10 +102,6 @@ const getPictureAndSave = () => {
   return knex('images').count('url AS count')
   .then(count => {
     getPictureFromJandan(true).then();
-    if(newImages.length) {
-      const image = newImages.splice(0, 1)[0];
-      return image;
-    }
     return knex('images').orderByRaw('RANDOM()').limit(1).where({
       status: 0,
     })

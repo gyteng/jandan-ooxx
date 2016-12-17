@@ -13,6 +13,7 @@ app.get('/api/image', (req, res) => {
   const number = req.query.number || 1;
   return knex('images').select(['id', 'url']).orderByRaw('RANDOM()').limit(number)
   .where('status', '>=', 0)
+  .where('id', '>', 0)
   .then(success => {
     res.send(success);
   }).catch(() => {
@@ -46,6 +47,7 @@ app.get('/api/image/:id', (req, res) => {
   return knex('images').select(['id', 'url'])
   .where({ id })
   .where('status', '>=', 0)
+  .where('id', '>', 0)
   .then(success => {
     if(success.length) {
       return res.send(success[0]);
@@ -111,4 +113,19 @@ app.put('/api/image/:id', isLogin, (req, res) => {
   }).catch((err) => {
     res.status(500).end();
   });
+});
+
+app.get('/api/test', (req, res) => {
+  knex('images').where({status: -1}).where('id', '>', 0).limit(1).then(s => {
+    res.send(s);
+  }).catch(err => {
+    console.log(err);
+  });
+
+  // knex('images').min('id AS min').then(s => {
+  //   res.send(s);
+  // }).catch(err => {
+  //   console.log(err);
+  // });
+
 });
