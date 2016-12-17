@@ -69,6 +69,13 @@ const getPictureFromJandan = (limit) => {
   }).then(url => {
     return filterPic(url, maxPage, minPage);
   }).then(url => {
+    return knex('images').where({ url }).where('status', '>=', 0).then(success => {
+      if(success.length) {
+        return Promise.reject('url exists');
+      }
+      return url;
+    });
+  }).then(url => {
     const insert = { url };
     return knex('images').where({status: -1}).where('id', '>', 0).limit(1).then(success => {
       if(success.length) {
