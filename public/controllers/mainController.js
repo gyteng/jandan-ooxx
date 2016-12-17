@@ -46,6 +46,7 @@ app
         $scope.showHelpDialog();
       };
       $scope.favorite = () => {
+        if($scope.public.isFavorite) { return; }
         $scope.public.isFavorite = true;
         $http.post('/api/image/favorite', {
           id: $scope.public.currentImage.id,
