@@ -69,7 +69,7 @@ const getPictureFromJandan = (limit) => {
   }).then(url => {
     return filterPic(url, maxPage, minPage);
   }).then(url => {
-    return knex('images').where({ url }).where('status', '>=', 0).then(success => {
+    return knex('images').where({ url }).then(success => {
       if(success.length) {
         return Promise.reject('url exists');
       }
