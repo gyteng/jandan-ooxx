@@ -21,8 +21,6 @@ app
         history: $localStorage.imagesHistory,
         settings: $localStorage.settings,
       };
-      // console.log($localStorage);
-      // console.log($scope.public);
       $scope.checkAdmin = () => {
         $http.get('/api/login').then(success => {
           $scope.public.isAdmin = success.data.isLogin;
