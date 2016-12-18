@@ -140,7 +140,7 @@ app
           $scope.imagePreload = 1;
           $timeout(() => {
             $scope.imagePreload = 15;
-          }, 1500);
+          }, 2000);
         }
       });
       $scope.addHistory = (image) => {
