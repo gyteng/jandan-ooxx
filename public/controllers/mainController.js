@@ -137,11 +137,10 @@ app
           $scope.getImage();
         }
         if(!$scope.imagePreload && $scope.public.images.length) {
-          $http.get($scope.public.images[0].url).then(() => {
+          $scope.imagePreload = 1;
+          $timeout(() => {
             $scope.imagePreload = 15;
-          }).catch(() => {
-            $scope.imagePreload = 15;
-          });
+          }, 1500);
         }
       });
       $scope.addHistory = (image) => {
