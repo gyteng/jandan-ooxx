@@ -1,8 +1,8 @@
 const app = require('../index').app;
 
 app
-  .controller('MainController', ['$scope', '$mdSidenav', '$state', '$mdDialog', '$localStorage', '$interval', '$location', '$http',
-    ($scope, $mdSidenav, $state, $mdDialog, $localStorage, $interval, $location, $http) => {
+  .controller('MainController', ['$scope', '$mdSidenav', '$state', '$mdDialog', '$localStorage', '$interval', '$location', '$http', '$timeout',
+    ($scope, $mdSidenav, $state, $mdDialog, $localStorage, $interval, $location, $http, $timeout) => {
       $localStorage.$default({
         settings: {
           autoChange: false,
