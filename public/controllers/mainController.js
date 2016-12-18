@@ -110,10 +110,10 @@ app
       };
 
       $scope.imageUrlPreload = 60;
-      $scope.imagePreload = 1;
-      $timeout(() => {
-        $scope.imagePreload = 15;
-      }, 1500);
+      $scope.imagePreload = 0;
+      // $timeout(() => {
+      //   $scope.imagePreload = 15;
+      // }, 1500);
       $scope.getImage = () => {
         return $http.get('/api/image', {
           params: { number: $scope.imageUrlPreload - $scope.public.images.length }
@@ -135,6 +135,13 @@ app
       $scope.$watch('public.images.length', () => {
         if($scope.public.images.length < $scope.imageUrlPreload / 2) {
           $scope.getImage();
+        }
+        if(!$scope.imagePreload && $scope.public.images.length) {
+          $http.get($scope.public.images[0].url).then(() => {
+            $scope.imagePreload = 15;
+          }).catch(() => {
+            $scope.imagePreload = 15;
+          });
         }
       });
       $scope.addHistory = (image) => {
