@@ -16,4 +16,4 @@
 <div style="position: absolute; right: 15px; bottom: 15px; opacity:0.4" ng-show="autoChange.status">
   <md-progress-circular md-mode="determinate" value="{{progress.circular}}" md-diameter="20px"></md-progress-circular>
 </div>
-<img ng-hide="true" ng-if="$index < imagePreload" ng-repeat="image in public.images track by $index" ng-src="{{image.url}}"></img>
+<img ng-hide="true" ng-if="$index < imagePreload && $index !== 0" ng-repeat="image in public.images track by $index" ng-src="{{image.url}}"></img>

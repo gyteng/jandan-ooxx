@@ -111,9 +111,6 @@ app
 
       $scope.imageUrlPreload = 60;
       $scope.imagePreload = 0;
-      // $timeout(() => {
-      //   $scope.imagePreload = 15;
-      // }, 1500);
       $scope.getImage = () => {
         return $http.get('/api/image', {
           params: { number: $scope.imageUrlPreload - $scope.public.images.length }
@@ -136,12 +133,12 @@ app
         if($scope.public.images.length < $scope.imageUrlPreload / 2) {
           $scope.getImage();
         }
-        if(!$scope.imagePreload && $scope.public.images.length) {
-          $scope.imagePreload = 1;
-          $timeout(() => {
-            $scope.imagePreload = 15;
-          }, 2000);
-        }
+        // if(!$scope.imagePreload && $scope.public.images.length) {
+        //   $scope.imagePreload = 1;
+        //   $timeout(() => {
+        //     $scope.imagePreload = 15;
+        //   }, 2000);
+        // }
       });
       $scope.addHistory = (image) => {
         $localStorage.imagesHistory = $localStorage.imagesHistory.filter(f => {
@@ -186,6 +183,9 @@ app
         }
       };
       $scope.randomImage = () => {
+        if($scope.imagePreload < 15) {
+          $scope.imagePreload += 2;
+        }
         if($scope.public.images.length > 1) {
           $scope.public.images.splice(0, 1);
           const image = $scope.public.images[0];
