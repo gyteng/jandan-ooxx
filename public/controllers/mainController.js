@@ -133,12 +133,6 @@ app
         if($scope.public.images.length < $scope.imageUrlPreload / 2) {
           $scope.getImage();
         }
-        // if(!$scope.imagePreload && $scope.public.images.length) {
-        //   $scope.imagePreload = 1;
-        //   $timeout(() => {
-        //     $scope.imagePreload = 15;
-        //   }, 2000);
-        // }
       });
       $scope.addHistory = (image) => {
         $localStorage.imagesHistory = $localStorage.imagesHistory.filter(f => {
