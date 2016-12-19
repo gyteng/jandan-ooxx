@@ -1,6 +1,6 @@
 {
   "name": "jandan-ooxx",
-  "version": "0.3.16",
+  "version": "0.3.17",
   "description": "",
   "main": "server.js",
   "scripts": {
@@ -17,6 +17,7 @@
     "express": "^4.14.0",
     "express-session": "^1.14.2",
     "knex": "^0.12.6",
+    "moment": "^2.17.1",
     "request": "^2.79.0",
     "request-promise": "^4.1.1",
     "sqlite3": "^3.1.8"

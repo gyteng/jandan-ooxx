@@ -1,6 +1,7 @@
 const app = require('./express').app;
 const knex = require('./db').knex;
 const password = require('../config').conf.password;
+const moment = require('moment');
 
 const isLogin = (req, res, next) => {
   if(req.session.isLogin) {
@@ -9,30 +10,48 @@ const isLogin = (req, res, next) => {
   res.status(401).end();
 };
 
-app.get('/api/image', (req, res) => {
-  const number = req.query.number || 1;
-  return knex('images').select(['id', 'url']).orderByRaw('RANDOM()').limit(number)
-  .where('status', '>=', 0)
-  .where('id', '>', 0)
-  .then(success => {
-    res.send(success);
-  }).catch(() => {
-    res.status(500).end();
-  });
-});
-
-// app.get('/api/aaa', (req, res) => {
+// app.get('/api/image', (req, res) => {
 //   const number = req.query.number || 1;
-//   return knex('images').select(['images.id', 'images.url']).leftJoin('view', 'view.imageId', 'images.id').limit(number)
-//   .where('images.status', '>=', 0)
-//   .where('images.id', '>', 0)
+//   return knex('images').select(['id', 'url']).orderByRaw('RANDOM()').limit(number)
+//   .where('status', '>=', 0)
+//   .where('id', '>', 0)
 //   .then(success => {
 //     res.send(success);
-//   }).catch(err => {
-//     console.log(err);
+//   }).catch(() => {
 //     res.status(500).end();
 //   });
 // });
+
+app.get('/api/image', (req, res) => {
+  const number = +req.query.number || 1;
+  const sessionId = req.session.id;
+  return knex('images').select([
+    'images.id AS id',
+    'images.url AS url',
+  ]).leftJoin('view', function() {
+    this.on('view.imageId', 'images.id').andOn('view.session', sessionId);
+  }).limit(number)
+  .where('images.status', '>=', 0)
+  .where('images.id', '>', 0)
+  .groupBy('images.id')
+  .havingRaw('count(view.id) = 0')
+  .orderByRaw('RANDOM()')
+  .then(success => {
+    if(success.length < number || Math.random() > 0.8) {
+      return knex('images').select(['id', 'url']).orderByRaw('RANDOM()').limit(number)
+      .where('status', '>=', 0)
+      .where('id', '>', 0).then(success => {
+        res.send(success);
+        return;
+      });
+    }
+    res.send(success);
+    return;
+  }).catch(err => {
+    console.log(err);
+    res.status(500).end();
+  });
+});
 
 app.get('/api/image/week', (req, res) => {
   const number = req.query.number || 1;
