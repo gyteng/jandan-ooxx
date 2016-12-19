@@ -110,7 +110,7 @@ app
       };
 
       $scope.imageUrlPreload = 60;
-      $scope.imagePreload = 0;
+      $scope.imagePreload = 2;
       $scope.getImage = () => {
         return $http.get('/api/image', {
           params: { number: $scope.imageUrlPreload - $scope.public.images.length }
