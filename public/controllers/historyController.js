@@ -14,6 +14,7 @@ app
         $scope.divHeightStyle.height = 100/6 + 'vw';
       }
       const loadHistoryImages = () => {
+        $scope.public.isLoading = true;
         $scope.history = $localStorage.imagesHistory.map(m => {
           return {
             id: m.id,
@@ -31,6 +32,7 @@ app
             if(img.height < img.width) {
               $scope.history[i].style = { height: '100%', 'max-width': 'none', 'min-width': 100 / f.height * f.width + '%'};
             }
+            $scope.public.isLoading = false;
           };
           img.src = f.url;
         });

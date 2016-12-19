@@ -47,5 +47,5 @@ app.get('*',
 );
 
 app.listen(port, '0.0.0.0', () => {
-  console.log('system start.');
+  console.log(`system start. version: ${ version }`);
 });

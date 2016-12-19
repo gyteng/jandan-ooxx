@@ -21,6 +21,19 @@ app.get('/api/image', (req, res) => {
   });
 });
 
+// app.get('/api/aaa', (req, res) => {
+//   const number = req.query.number || 1;
+//   return knex('images').select(['images.id', 'images.url']).leftJoin('view', 'view.imageId', 'images.id').limit(number)
+//   .where('images.status', '>=', 0)
+//   .where('images.id', '>', 0)
+//   .then(success => {
+//     res.send(success);
+//   }).catch(err => {
+//     console.log(err);
+//     res.status(500).end();
+//   });
+// });
+
 app.get('/api/image/week', (req, res) => {
   const number = req.query.number || 1;
   knex('favorite').count('images.id AS number').select(['images.id', 'images.url', 'favorite.create'])

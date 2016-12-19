@@ -95,13 +95,6 @@ const getPictureFromJandan = (limit) => {
       console.log(`添加图片[${ success[0] }]`);
       return;
     });
-
-
-    // knex('images').insert({ url }).then(success => {
-    //   console.log(`添加图片[${ success[0] }][${ url }]`);
-    // }).catch(() => {
-    // });
-    // return url;
   });
 };
 
