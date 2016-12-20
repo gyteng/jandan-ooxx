@@ -22,9 +22,21 @@ const isLogin = (req, res, next) => {
 //   });
 // });
 
-app.get('/api/image', (req, res) => {
-  const number = +req.query.number || 1;
-  const sessionId = req.session.id;
+const getUnreadImage = (number = 1) => {
+  return knex('images').select([
+    'images.id AS id',
+    'images.url AS url',
+  ]).leftJoin('view', function() {
+    this.on('view.imageId', 'images.id');
+  }).limit(number)
+  .where('images.status', '>=', 0)
+  .where('images.id', '>', 0)
+  .groupBy('images.id')
+  .havingRaw('count(view.id) = 0')
+  .orderByRaw('RANDOM()');
+};
+
+const getUnreadImageWithSession = (number = 1, sessionId, count = 0) => {
   return knex('images').select([
     'images.id AS id',
     'images.url AS url',
@@ -34,19 +46,73 @@ app.get('/api/image', (req, res) => {
   .where('images.status', '>=', 0)
   .where('images.id', '>', 0)
   .groupBy('images.id')
-  .havingRaw('count(view.id) = 0')
-  .orderByRaw('RANDOM()')
-  .then(success => {
-    if(success.length < number || Math.random() > 0.8) {
-      return knex('images').select(['id', 'url']).orderByRaw('RANDOM()').limit(number)
-      .where('status', '>=', 0)
-      .where('id', '>', 0).then(success => {
-        res.send(success);
-        return;
-      });
+  .havingRaw('count(view.id) <= ?', [ count ])
+  .orderByRaw('RANDOM()');
+};
+
+const getImage = (number = 1) => {
+  return knex('images').select(['id', 'url']).orderByRaw('RANDOM()')
+  .limit(number)
+  .where('status', '>=', 0)
+  .where('id', '>', 0);
+};
+
+app.get('/api/image', (req, res) => {
+  const number = +req.query.number || 1;
+  const sessionId = req.session.id;
+  const data = [];
+  return getUnreadImage(number).then(success => {
+    success.forEach(f => {
+      data.push(f);
+    });
+    if(data.length >= number) {
+      return [];
     }
-    res.send(success);
+    return getUnreadImageWithSession(number - data.length, sessionId, 0);
+  }).then(success => {
+    success.forEach(f => {
+      data.push(f);
+    });
+    if(data.length >= number) {
+      return [];
+    }
+    return getUnreadImageWithSession(number - data.length, sessionId, 3);
+  }).then(success => {
+    success.forEach(f => {
+      data.push(f);
+    });
+    if(data.length >= number) {
+      return [];
+    }
+    return getImage(number - data.length);
+  }).then(success => {
+    success.forEach(f => {
+      data.push(f);
+    });
+    res.send(data);
     return;
+  // return knex('images').select([
+  //   'images.id AS id',
+  //   'images.url AS url',
+  // ]).leftJoin('view', function() {
+  //   this.on('view.imageId', 'images.id').andOn('view.session', sessionId);
+  // }).limit(number)
+  // .where('images.status', '>=', 0)
+  // .where('images.id', '>', 0)
+  // .groupBy('images.id')
+  // .havingRaw('count(view.id) = 0')
+  // .orderByRaw('RANDOM()')
+  // .then(success => {
+  //   if(success.length < number || Math.random() > 0.8) {
+  //     return knex('images').select(['id', 'url']).orderByRaw('RANDOM()').limit(number)
+  //     .where('status', '>=', 0)
+  //     .where('id', '>', 0).then(success => {
+  //       res.send(success);
+  //       return;
+  //     });
+  //   }
+  //   res.send(success);
+  //   return;
   }).catch(err => {
     console.log(err);
     res.status(500).end();
