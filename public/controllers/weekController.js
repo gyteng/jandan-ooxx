@@ -3,6 +3,7 @@ const app = require('../index').app;
 app
   .controller('WeekController', ['$scope', '$localStorage', '$state', '$mdMedia', '$http',
     ($scope, $localStorage, $state, $mdMedia, $http) => {
+      $scope.loadWeekImages();
       $scope.divHeightStyle = { height: 100/3 + 'vw' };
       if($mdMedia('md')) {
         $scope.divHeightStyle.height = 100/4 + 'vw';

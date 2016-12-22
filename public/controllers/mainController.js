@@ -226,7 +226,7 @@ app
         });
         $scope.public.view = [];
       }, 10 * 1000);
-      const loadWeekImages = () => {
+      $scope.loadWeekImages = () => {
         $http.get('/api/image/week', {
           params: { number: 60 }
         }).then(success => {
@@ -253,9 +253,8 @@ app
           });
         });
       };
-      loadWeekImages();
       $interval(() => {
-        loadWeekImages();
+        $scope.loadWeekImages();
       }, 90 * 1000);
     }
   ]);
