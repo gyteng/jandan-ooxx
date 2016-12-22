@@ -20,6 +20,7 @@ app
         $http.put('/api/image/' + id, {
           status: -1,
         }).then().catch();
+        $scope.public.images = $scope.public.images.filter(f => { return f.id !== id; });
         $scope.randomImage();
       };
     }
