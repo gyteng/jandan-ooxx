@@ -49,6 +49,22 @@ app.get('/.well-known/acme-challenge/:id', (req, res) => {
   });
 });
 
+app.get('/test', (req, res) => {
+  // res.header('Content-Type', 'text/plain');
+  res.render('test');
+});
+app.get('/testscript.js', (req, res) => {
+  res.header('Content-Type', 'text/javascript');
+  res.sendFile('testscript.js', {
+    root: path.resolve(__dirname, '../views/'),
+  }, err => {
+    if (err) {
+      console.log(err);
+      return res.status(404).end();
+    }
+  });
+});
+
 app.get('*',
   (req, res) => {
     res.render('index', {
@@ -71,6 +87,4 @@ if(config.key.privateKey && config.key.certificate) {
 
 http.createServer(app).listen(80);
 
-// app.listen(port, '0.0.0.0', () => {
-  console.log(`system start. version: ${ version }`);
-// });
+console.log(`system start. version: ${ version }`);
