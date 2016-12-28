@@ -49,14 +49,14 @@ app.get('/.well-known/acme-challenge/:id', (req, res) => {
   });
 });
 
-app.get('/test', (req, res) => {
-  // res.header('Content-Type', 'text/plain');
-  res.render('test');
-});
-app.get('/testscript.js', (req, res) => {
+// app.get('/test', (req, res) => {
+//   // res.header('Content-Type', 'text/plain');
+//   res.render('test');
+// });
+app.get('/serviceworker.js', (req, res) => {
   res.header('Content-Type', 'text/javascript');
-  res.sendFile('testscript.js', {
-    root: path.resolve(__dirname, '../views/'),
+  res.sendFile('serviceworker.js', {
+    root: path.resolve(__dirname, '../public/'),
   }, err => {
     if (err) {
       console.log(err);
