@@ -10,7 +10,7 @@
     <base href="/">
 </head>
 <body ng-app="app" ng-cloak>
-    <script src="/serviceworker.js"></script>
+    <!-- <script src="/serviceworker.js"></script> -->
     <script src="/libs/angular.min.js"></script>
     <script src="/libs/ngStorage.min.js"></script>
     <script src="/libs/angular-animate.min.js"></script>
@@ -70,6 +70,15 @@
       })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
       ga('create', 'UA-88663341-1', 'auto');
       ga('send', 'pageview');
+    </script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/serviceworker.js').then(function(registration) {
+          console.log('ServiceWorker registration successful with scope: ', registration.scope);
+        }).catch(function(err) {
+          console.log('ServiceWorker registration failed: ', err);
+        });
+      }
     </script>
 </body>
 </html>
