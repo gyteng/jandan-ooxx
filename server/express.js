@@ -38,6 +38,17 @@ require('./jandan');
 
 const version = require('../package').version;
 
+app.get('/.well-known/acme-challenge/:id', (req, res) => {
+  res.sendFile(req.params.id, {
+    root: path.resolve(__dirname, '../../opensslkey/'),
+  }, err => {
+    if (err) {
+      console.log(err);
+      return res.status(404).end();
+    }
+  });
+});
+
 app.get('*',
   (req, res) => {
     res.render('index', {
@@ -46,6 +57,20 @@ app.get('*',
   }
 );
 
-app.listen(port, '0.0.0.0', () => {
+const https = require('https');
+const http = require('http');
+
+const options = {};
+const config = require('../config').conf;
+if(config.key.privateKey && config.key.certificate) {
+  const fs = require('fs');
+  options.key = fs.readFileSync(config.key.privateKey);
+  options.cert = fs.readFileSync(config.key.certificate);
+  https.createServer(options, app).listen(443);
+}
+
+http.createServer(app).listen(80);
+
+// app.listen(port, '0.0.0.0', () => {
   console.log(`system start. version: ${ version }`);
-});
+// });
