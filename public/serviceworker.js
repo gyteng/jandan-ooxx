@@ -1,9 +1,8 @@
 importScripts('/libs/serviceworker-cache-polyfill.js');
 
-var ONLINE_CACHE_NAME = 'OOXX 2016-12-29 17:29';
+var ONLINE_CACHE_NAME = 'OOXX 2016-12-29 21:02';
 var onlineCacheUrl = [
   '/',
-  '/serviceworker.js',
 
   '/libs/angular.min.js',
   '/libs/ngStorage.min.js',
@@ -31,6 +30,21 @@ var onlineCacheUrl = [
   '/public/views/password.html',
   '/public/views/week.html',
 ];
+
+this.addEventListener('activate', function(event) {
+  var cacheWhitelist = [ONLINE_CACHE_NAME];
+
+  event.waitUntil(
+    caches.keys().then(function(keyList) {
+      return Promise.all(keyList.map(function(key) {
+        if (cacheWhitelist.indexOf(key) === -1) {
+          console.log('delete ' + key);
+          return caches.delete(key);
+        }
+      }));
+    })
+  );
+});
 
 self.addEventListener('install', function(event) {
   event.waitUntil(
@@ -62,10 +76,11 @@ self.addEventListener('fetch', function(event) {
       fetch(event.request)
       .then(function(response) {
         return response;
-      }).catch(function() {
-        return fetch('/').then(function(response) {
-          return response;
-        });
+      }).catch(function(err) {
+        var request = new Request('/');
+        return caches.match(request);
+      }).then(function(response) {
+        return response;
       })
     );
   } else {
