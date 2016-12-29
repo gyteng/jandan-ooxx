@@ -11,6 +11,7 @@ app
         imagesHistory: [],
       });
       $scope.public = {
+        isOnline: false,
         isLoading: false,
         isAdmin : false,
         isFavorite: false,
@@ -256,13 +257,12 @@ app
       $interval(() => {
         $scope.loadWeekImages();
       }, 90 * 1000);
-      
-      $scope.online = false;
+
       let resendAfterOnlineCheck = false;
       const checkIsOnline = () => {
         $http.get('/api/online').then(success => {
           if(success.data === 'online') {
-            $scope.online = true;
+            $scope.public.isOnline = true;
             if(resendAfterOnlineCheck) {
               $scope.randomImage();
             }
