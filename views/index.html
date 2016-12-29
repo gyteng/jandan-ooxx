@@ -1,11 +1,21 @@
 <html lang="zh-cn">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=1">
+    <!-- <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"> -->
+
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="OOXX">
+    <link rel="apple-touch-icon" href="/libs/favicon-256x256.png">
+
+    <meta name="msapplication-TileImage" content="/libs/favicon-256x256.png">
+    <meta name="msapplication-TileColor" content="#2F3BA2">
+
     <link rel="stylesheet" href="/libs/angular-material.min.css">
     <link rel="stylesheet" href="/libs/style.css">
     <link rel="shortcut icon" href="/libs/favicon.png">
+    <link rel="manifest" href="/public/manifest.json">
     <title>OOXX</title>
     <base href="/">
 </head>
@@ -21,9 +31,6 @@
     <script src="/libs/gestures.min.js"></script>
     <script src="/libs/bundle.js"></script>
     <div ng-controller="MainController">
-        <div style="z-index: 1000" layout-fill layout="row" layout-align="center center" ng-if="!online">
-            <md-progress-circular md-mode="indeterminate" class="md-accent"></md-progress-circular>
-        </div>
         <section layout="row" flex>
             <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="false" layout="row" layout-align="space-between stretch">
                 <md-content layout="column" layout-align="space-between center">
@@ -55,6 +62,9 @@
                 </md-content>
                 <div style="position: absolute; right: 5px; bottom: 5px; color:#555; font-size:12px;"><%= version%></div>
             </md-sidenav>
+            <!-- <div layout-fill layout="row" layout-align="center center" ng-hide="online">
+                <md-progress-circular md-mode="indeterminate" class="md-accent"></md-progress-circular>
+            </div> -->
             <div layout-fill layout="row" layout-align="center center" ng-if="public.isLoading">
                 <md-progress-circular md-mode="indeterminate"></md-progress-circular>
             </div>
