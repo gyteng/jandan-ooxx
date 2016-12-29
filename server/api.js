@@ -212,3 +212,7 @@ app.put('/api/image/:id', isLogin, (req, res) => {
     res.status(500).end();
   });
 });
+
+app.get('/api/online', (req, res) => {
+  res.send('online');
+});

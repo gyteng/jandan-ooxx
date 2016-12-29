@@ -22,6 +22,9 @@
     <script src="/libs/gestures.min.js"></script>
     <script src="/libs/bundle.js"></script>
     <div ng-controller="MainController">
+        <div layout-fill layout="row" layout-align="center center" ng-if="!online">
+            <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+        </div>
         <section layout="row" flex>
             <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="false" layout="row" layout-align="space-between stretch">
                 <md-content layout="column" layout-align="space-between center">
@@ -72,12 +75,10 @@
       ga('send', 'pageview');
     </script>
     <script>
-      function isWeixinBrowser(){
-        return /micromessenger/.test(navigator.userAgent.toLowerCase());
-      }
-      if(isWeixinBrowser()) {
-        return;
-      } else {
+      // function isWeixinBrowser(){
+      //   return /micromessenger/.test(navigator.userAgent.toLowerCase());
+      // }
+      // if(!isWeixinBrowser()) {
         if ('serviceWorker' in navigator) {
           navigator.serviceWorker.register('/serviceworker.js').then(function(registration) {
             console.log('ServiceWorker registration successful with scope: ', registration.scope);
@@ -85,7 +86,7 @@
             console.log('ServiceWorker registration failed: ', err);
           });
         }
-      }
+      // }
     </script>
 </body>
 </html>
