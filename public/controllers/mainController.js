@@ -256,6 +256,7 @@ app
       $interval(() => {
         $scope.loadWeekImages();
       }, 90 * 1000);
+      
       $scope.online = false;
       let resendAfterOnlineCheck = false;
       const checkIsOnline = () => {
@@ -267,12 +268,14 @@ app
             }
             return;
           }
+          $scope.closeHelpDialog();
           $timeout(() => {
             checkIsOnline();
           }, 5 * 1000);
           resendAfterOnlineCheck = true;
           return Promise.reject();
         }).catch(() => {
+          $scope.closeHelpDialog();
           $timeout(() => {
             checkIsOnline();
           }, 5 * 1000);
