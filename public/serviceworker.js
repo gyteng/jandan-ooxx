@@ -1,8 +1,9 @@
 importScripts('/libs/serviceworker-cache-polyfill.js');
 
-var ONLINE_CACHE_NAME = 'OOXX 2016-12-29 16:13';
+var ONLINE_CACHE_NAME = 'OOXX 2016-12-29 17:29';
 var onlineCacheUrl = [
   '/',
+  '/serviceworker.js',
 
   '/libs/angular.min.js',
   '/libs/ngStorage.min.js',
