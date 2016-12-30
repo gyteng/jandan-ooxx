@@ -13,7 +13,7 @@
       "sizes": "128x128"
     },
     {
-      "src": "/libs/favicon-256x256.png",
+      "src": "/libs/favicon-144x144.png",
       "type": "image/png",
       "sizes": "144x144"
     },
@@ -26,5 +26,5 @@
   "start_url": "/",
   "display": "standalone",
   "background_color": "#2196F3",
-  "theme_color": "#2F3BA2"
+  "theme_color": "#ff4081"
 }
