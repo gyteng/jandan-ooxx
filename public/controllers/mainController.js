@@ -258,12 +258,12 @@ app
         $scope.loadWeekImages();
       }, 90 * 1000);
 
-      let resendAfterOnlineCheck = false;
+      $scope.resendAfterOnlineCheck = false;
       const checkIsOnline = () => {
         $http.get('/api/online').then(success => {
           if(success.data === 'online') {
             $scope.public.isOnline = true;
-            if(resendAfterOnlineCheck) {
+            if($scope.resendAfterOnlineCheck) {
               $scope.randomImage();
             }
             return;
@@ -272,14 +272,14 @@ app
           $timeout(() => {
             checkIsOnline();
           }, 5 * 1000);
-          resendAfterOnlineCheck = true;
+          $scope.resendAfterOnlineCheck = true;
           return Promise.reject();
         }).catch(() => {
           $scope.closeHelpDialog();
           $timeout(() => {
             checkIsOnline();
           }, 5 * 1000);
-          resendAfterOnlineCheck = true;
+          $scope.resendAfterOnlineCheck = true;
           return Promise.reject();
         });
       };
@@ -305,7 +305,7 @@ app
               status: -1,
             }).then().catch();
             $scope.public.images = $scope.public.images.filter(f => { return f.id !== id; });
-            $scope.randomImage();
+            $state.go('index.image', { id: id + 1 });
           }
         }
       });
