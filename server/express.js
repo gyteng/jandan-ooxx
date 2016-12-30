@@ -1,5 +1,7 @@
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
+const config = require('../config').conf;
+
 const port = require('../config').conf.port;
 const knex = require('./db').knex;
 
@@ -25,6 +27,14 @@ app.use(session({
   cookie: { secure: false, httpOnly: true, maxAge: 5 * 24 * 60 * 60 * 1000 },
   store,
 }));
+
+app.use((req, res, next) => {
+  if(config.key.privateKey && config.key.certificate && !req.secure) {
+    return res.redirect('https://' + req.headers.host + (config.sslPort ? ':' + config.sslPort : '') + req.url);
+  } else {
+    next();
+  }
+});
 
 app.engine('.html', require('ejs').__express);
 app.set('view engine', 'html');
@@ -73,14 +83,13 @@ const https = require('https');
 const http = require('http');
 
 const options = {};
-const config = require('../config').conf;
 if(config.key.privateKey && config.key.certificate) {
   const fs = require('fs');
   options.key = fs.readFileSync(config.key.privateKey);
   options.cert = fs.readFileSync(config.key.certificate);
-  https.createServer(options, app).listen(443);
+  https.createServer(options, app).listen(config.sslPort ||443);
 }
 
-http.createServer(app).listen(80);
+http.createServer(app).listen(config.port || 80);
 
 console.log(`system start. version: ${ version }`);
