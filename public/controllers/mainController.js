@@ -1,8 +1,8 @@
 const app = require('../index').app;
 
 app
-  .controller('MainController', ['$scope', '$mdSidenav', '$state', '$mdDialog', '$localStorage', '$interval', '$location', '$http', '$timeout',
-    ($scope, $mdSidenav, $state, $mdDialog, $localStorage, $interval, $location, $http, $timeout) => {
+  .controller('MainController', ['$scope', '$mdSidenav', '$state', '$mdDialog', '$localStorage', '$interval', '$location', '$http', '$timeout', '$document',
+    ($scope, $mdSidenav, $state, $mdDialog, $localStorage, $interval, $location, $http, $timeout, $document) => {
       $localStorage.$default({
         settings: {
           autoChange: false,
@@ -284,5 +284,30 @@ app
         });
       };
       checkIsOnline();
+
+      $document.bind('keydown', function (e) {
+        if($state.current.name === 'index.image') {
+          if(e.keyCode === 37) {
+            $scope.prevImage();
+          }
+          if(e.keyCode === 39) {
+            $scope.nextImage();
+          }
+          if(e.keyCode === 38) {
+            $state.go('index.image', { id: $scope.public.currentImage.id - 1 });
+          }
+          if(e.keyCode === 40) {
+            $state.go('index.image', { id: $scope.public.currentImage.id + 1 });
+          }
+          if($scope.public.isAdmin && e.keyCode === 68) {
+            const id = $scope.public.currentImage.id;
+            $http.put('/api/image/' + id, {
+              status: -1,
+            }).then().catch();
+            $scope.public.images = $scope.public.images.filter(f => { return f.id !== id; });
+            $scope.randomImage();
+          }
+        }
+      });
     }
   ]);
