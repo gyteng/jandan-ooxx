@@ -170,7 +170,9 @@ app
             $scope.public.isLoading = false;
           } else {
             $scope.getImageById(id).then((s) => {
-              $scope.setCurrentImage(id, addToHistory);
+              // TODO
+              
+              $scope.setCurrentImage(id);
             }).catch(() => {
               $scope.public.isLoading = false;
             });
