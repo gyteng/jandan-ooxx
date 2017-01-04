@@ -170,8 +170,6 @@ app
             $scope.public.isLoading = false;
           } else {
             $scope.getImageById(id).then((s) => {
-              // TODO
-              
               $scope.setCurrentImage(id);
             }).catch(() => {
               $scope.public.isLoading = false;
