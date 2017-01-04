@@ -205,6 +205,9 @@ app
           $state.go('index.image', { id });
         }
       };
+      $scope.prevNumImage = () => {
+        $state.go('index.image', { id: $scope.public.currentImage.id - 1 });
+      };
       $scope.nextImage = () => {
         let index = null;
         $localStorage.imagesHistory.forEach((f, i) => {
@@ -219,6 +222,9 @@ app
         } else {
           $scope.randomImage();
         }
+      };
+      $scope.nextNumImage = () => {
+        $state.go('index.image', { id: $scope.public.currentImage.id + 1 });
       };
       $interval(() => {
         if(!$scope.public.view.length) { return; }
