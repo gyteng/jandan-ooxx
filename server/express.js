@@ -80,6 +80,7 @@ app.get('*',
 );
 
 const https = require('https');
+const http2 = require('spdy');
 const http = require('http');
 
 const options = {};
@@ -87,7 +88,7 @@ if(config.key.privateKey && config.key.certificate) {
   const fs = require('fs');
   options.key = fs.readFileSync(config.key.privateKey);
   options.cert = fs.readFileSync(config.key.certificate);
-  https.createServer(options, app).listen(config.sslPort ||443);
+  http2.createServer(options, app).listen(config.sslPort ||443);
 }
 
 http.createServer(app).listen(config.port || 80);
