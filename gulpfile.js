@@ -1,5 +1,6 @@
 const gulp = require('gulp');
 const path = require('path');
+const ts = require('gulp-typescript');
 const webpack = require('webpack');
 const webpackStream = require('webpack-stream');
 
@@ -29,4 +30,13 @@ gulp.task('default', () => {
     })]
   }))
   .pipe(gulp.dest('libs'));
+});
+
+gulp.task('ts', () => {
+    return gulp.src('server/**/*.ts')
+        .pipe(ts({
+            noImplicitAny: true,
+            out: 'output.js'
+        }))
+        .pipe(gulp.dest('built'));
 });
