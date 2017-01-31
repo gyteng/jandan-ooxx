@@ -32,11 +32,18 @@ gulp.task('default', () => {
   .pipe(gulp.dest('libs'));
 });
 
+const tsProject = ts.createProject('tsconfig.json');
+
 gulp.task('ts', () => {
-    return gulp.src('server/**/*.ts')
-        .pipe(ts({
-            noImplicitAny: true,
-            out: 'output.js'
-        }))
-        .pipe(gulp.dest('built'));
+    // return gulp.src('server/**/*.ts')
+    //     .pipe(ts({
+    //         noImplicitAny: true,
+    //         out: 'output.js'
+    //     }))
+    //     .pipe(gulp.dest('built'));
+
+    const tsResult = gulp.src("server/**/*.ts") // or tsProject.src()
+        .pipe(tsProject());
+
+    return tsResult.js.pipe(gulp.dest('built'));
 });

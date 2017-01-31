@@ -1,1 +1,2 @@
-const a = 1;
+const a: number = 1;
+export {a as t};
