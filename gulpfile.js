@@ -42,8 +42,8 @@ gulp.task('ts', () => {
     //     }))
     //     .pipe(gulp.dest('built'));
 
-    const tsResult = gulp.src("server/**/*.ts") // or tsProject.src()
+    const tsResult = gulp.src("src/**/*.ts") // or tsProject.src()
         .pipe(tsProject());
 
-    return tsResult.js.pipe(gulp.dest('built'));
+    return tsResult.js.pipe(gulp.dest('build'));
 });

@@ -1,13 +1,14 @@
 {
     "compilerOptions": {
-        "module": "system",
-        "noImplicitAny": true,
-        "removeComments": true,
-        "preserveConstEnums": true,
-        "outFile": "./tsc.js",
-        "sourceMap": true
+        "module": "commonjs",
+        "target": "es6",
+        "noImplicitAny": false,
+        "sourceMap": false,
+        "rootDir":"./src",
+        "outDir":"./build",
+        "watch": false
     },
-    "include": [
-      "server/**/*.ts"
+    "include":[
+        "./src/**/*"
     ]
 }
