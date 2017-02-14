@@ -28,13 +28,13 @@ app.use(session({
   store,
 }));
 
-app.use((req, res, next) => {
-  if(config.key.privateKey && config.key.certificate && !req.secure) {
-    return res.redirect('https://' + req.headers.host + (config.sslPort ? ':' + config.sslPort : '') + req.url);
-  } else {
-    next();
-  }
-});
+// app.use((req, res, next) => {
+//   if(config.key.privateKey && config.key.certificate && !req.secure) {
+//     return res.redirect('https://' + req.headers.host + (config.sslPort ? ':' + config.sslPort : '') + req.url);
+//   } else {
+//     next();
+//   }
+// });
 
 app.engine('.html', require('ejs').__express);
 app.set('view engine', 'html');
