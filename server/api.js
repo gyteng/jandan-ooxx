@@ -216,3 +216,17 @@ app.put('/api/image/:id', isLogin, (req, res) => {
 app.get('/api/online', (req, res) => {
   res.send('online');
 });
+
+app.post('/api/image', isLogin, (req, res) => {
+  if(!url) {
+    return res.status(403).end();
+  }
+  const url = req.body.url;
+  knex('images').insert({
+    url,
+  }).then(success => {
+    res.send(success);
+  }).catch(err => {
+    res.status(500).end();
+  });
+});
