@@ -218,10 +218,10 @@ app.get('/api/online', (req, res) => {
 });
 
 app.post('/api/image', isLogin, (req, res) => {
+  const url = req.body.url;
   if(!url) {
     return res.status(403).end();
   }
-  const url = req.body.url;
   knex('images').insert({
     url,
   }).then(success => {
